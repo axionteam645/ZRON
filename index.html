@@ -1,0 +1,1463 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08090d">
+<meta name="description" content="ZRON — The Golden Standard of Web3. Explore the ZRON ecosystem on BNB Smart Chain.">
+<title>ZRON | The Golden Standard of Web3</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+<style>
+:root{
+ --bg:#08090d;
+ --surface:#101218;
+ --surface2:#171a22;
+ --gold:#f7bc42;
+ --gold2:#ffdf85;
+ --text:#f5f5f7;
+ --muted:#9297a5;
+ --line:rgba(255,205,90,.15);
+ --green:#29d9a0;
+ --red:#ff657b;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Inter,Arial,sans-serif;
+ overflow-x:hidden;
+}
+body:before{
+ content:"";
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ z-index:-1;
+ background:
+ radial-gradient(ellipse at 80% 10%,rgba(224,143,15,.10),transparent 40%),
+ radial-gradient(ellipse at 10% 65%,rgba(150,92,5,.06),transparent 45%);
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.container{max-width:1220px;margin:auto;padding:0 24px}
+.gold{color:var(--gold)}
+.gradient-text{
+ background:linear-gradient(110deg,#fff0bd,#f3ac2b,#ffe49c);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+}
+header{
+ position:sticky;
+ top:0;
+ z-index:100;
+ background:rgba(8,9,13,.88);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--line);
+}
+.nav{
+ min-height:82px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:20px;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ font-family:"Space Grotesk";
+ font-size:26px;
+ font-weight:700;
+ letter-spacing:3px;
+}
+.brand-mark{
+ width:42px;height:42px;
+ border:1px solid var(--gold);
+ border-radius:50%;
+ display:grid;place-items:center;
+ color:var(--gold);
+ font-weight:900;
+ box-shadow:0 0 20px #e6a52625;
+}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font-size:13px;color:#b6b7bf;transition:.2s}
+nav a:hover{color:var(--gold)}
+.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ padding:13px 22px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ color:white;
+ background:var(--surface2);
+ font-weight:700;
+ font-size:13px;
+ transition:.25s;
+}
+.btn:hover{transform:translateY(-2px);border-color:var(--gold)}
+.btn-gold{
+ background:linear-gradient(120deg,#f3ad2e,#ffdb78);
+ color:#15100a;
+ border:0;
+ box-shadow:0 8px 35px #e7a52525;
+}
+.btn-outline{background:transparent;border:1px solid #bd8d38}
+.mobile-menu{display:none}
+.hero{
+ min-height:720px;
+ display:grid;
+ grid-template-columns:1.05fr .95fr;
+ align-items:center;
+ gap:45px;
+ padding-top:65px;
+ padding-bottom:85px;
+}
+.eyebrow{
+ display:inline-flex;
+ gap:9px;
+ align-items:center;
+ color:var(--gold);
+ border:1px solid var(--line);
+ background:#e7a72a0a;
+ padding:10px 15px;
+ border-radius:40px;
+ font-size:11px;
+ letter-spacing:2px;
+ font-weight:800;
+}
+.dot{
+ width:7px;height:7px;
+ background:var(--green);
+ border-radius:50%;
+ box-shadow:0 0 12px var(--green);
+}
+.hero h1{
+ font-family:"Space Grotesk";
+ font-size:clamp(48px,6vw,83px);
+ letter-spacing:-4px;
+ line-height:1.06;
+ margin:26px 0;
+}
+.hero p{
+ font-size:16px;
+ color:var(--muted);
+ line-height:1.9;
+ max-width:570px;
+}
+.actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:32px}
+.hero-visual{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ position:relative;
+}
+.hero-visual:before{
+ content:"";
+ position:absolute;
+ width:78%;
+ aspect-ratio:1;
+ background:#c88c1730;
+ filter:blur(90px);
+ border-radius:50%;
+}
+.coin{
+ position:relative;
+ width:min(100%,490px);
+ border-radius:50%;
+ filter:drop-shadow(0 0 45px #c98b2940);
+ animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-20px)}
+}
+.coin-fallback{
+ display:none;
+ width:360px;height:360px;
+ border:12px solid #d99a27;
+ border-radius:50%;
+ background:radial-gradient(circle,#34200a,#090909 70%);
+ place-items:center;
+ text-align:center;
+ box-shadow:0 0 70px #d69b3a45;
+}
+.coin-fallback strong{font-size:100px;color:var(--gold)}
+.section{padding:85px 0}
+.section-heading{text-align:center;margin-bottom:42px}
+.section-heading h2{
+ font-family:"Space Grotesk";
+ font-size:clamp(30px,4vw,48px);
+ margin:12px 0;
+}
+.section-heading p{color:var(--muted);line-height:1.8}
+.tag{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--gold)}
+.grid{display:grid;gap:18px}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{
+ border:1px solid var(--line);
+ background:linear-gradient(145deg,#15171d,#0d0f14);
+ border-radius:18px;
+ padding:26px;
+}
+.stat-label{color:var(--muted);font-size:12px}
+.stat-value{
+ font-family:"Space Grotesk";
+ font-size:26px;
+ font-weight:700;
+ margin-top:15px;
+ overflow-wrap:anywhere;
+}
+.stat-sub{font-size:11px;color:var(--gold);margin-top:10px}
+.feature-icon{
+ width:47px;height:47px;
+ display:grid;place-items:center;
+ border-radius:12px;
+ background:#e8a52617;
+ color:var(--gold);
+ font-size:22px;
+ margin-bottom:22px;
+}
+.card h3{font-size:18px;margin:10px 0}
+.card p{font-size:13px;line-height:1.9;color:var(--muted)}
+.market-layout{
+ display:grid;
+ grid-template-columns:1.5fr .8fr;
+ gap:20px;
+}
+.chart-box{height:320px;position:relative}
+.chart-controls{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.small-btn{
+ background:#1b1d23;
+ color:#aaa;
+ border:1px solid var(--line);
+ padding:8px 13px;
+ border-radius:8px;
+ font-size:12px;
+}
+.small-btn.active{background:var(--gold);color:#111}
+.info-row{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ border-bottom:1px solid var(--line);
+ padding:16px 0;
+ font-size:13px;
+}
+.info-row span:first-child{color:var(--muted)}
+.info-row strong{text-align:right;overflow-wrap:anywhere}
+.swap-shell{max-width:490px;margin:auto}
+.swap-tabs{display:flex;gap:8px;margin-bottom:22px}
+.swap-tabs button{flex:1}
+.swap-input{
+ border:1px solid var(--line);
+ border-radius:14px;
+ padding:18px;
+ background:#090b10;
+ margin:12px 0;
+}
+.swap-input label{
+ display:flex;
+ justify-content:space-between;
+ font-size:12px;
+ color:var(--muted);
+}
+.swap-input input{
+ width:100%;
+ border:0;
+ outline:0;
+ color:white;
+ background:transparent;
+ font-size:27px;
+ font-weight:700;
+ padding:17px 0 8px;
+}
+.swap-input select{
+ background:#202127;
+ border:1px solid var(--line);
+ border-radius:8px;
+ padding:9px;
+ color:white;
+ max-width:150px;
+}
+.swap-middle{text-align:center;margin:5px}
+.swap-middle button{
+ border:1px solid var(--line);
+ background:#24252b;
+ color:var(--gold);
+ border-radius:10px;
+ padding:12px 17px;
+}
+.notice{
+ background:#b9851512;
+ border:1px solid #b985153b;
+ color:#d8bf88;
+ padding:15px;
+ border-radius:10px;
+ font-size:12px;
+ line-height:1.8;
+ margin:17px 0;
+}
+.input{
+ width:100%;
+ background:#0c0e13;
+ border:1px solid var(--line);
+ border-radius:9px;
+ padding:13px;
+ color:white;
+ outline:0;
+}
+.input:focus{border-color:var(--gold)}
+.contract-box{
+ background:#080a0f;
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:18px;
+ word-break:break-all;
+ color:var(--gold2);
+ font-family:monospace;
+ font-size:13px;
+ line-height:2;
+}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}
+.timeline .card{border-top:3px solid var(--gold)}
+.timeline small{color:var(--gold);letter-spacing:2px}
+.timeline ul{padding-left:18px;color:var(--muted);font-size:13px;line-height:2}
+footer{
+ border-top:1px solid var(--line);
+ padding:40px 0;
+ color:var(--muted);
+ font-size:12px;
+}
+.footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.status{
+ position:fixed;bottom:20px;right:20px;
+ max-width:400px;
+ z-index:1000;
+ background:#191d23;
+ border:1px solid var(--gold);
+ border-radius:12px;
+ padding:16px 22px;
+ font-size:13px;
+ display:none;
+ box-shadow:0 10px 35px #0009;
+ line-height:1.6;
+}
+.loading{opacity:.6}
+.wallet-address{color:var(--gold);font-size:12px;overflow-wrap:anywhere}
+@media(max-width:1000px){
+ nav{display:none}
+ .mobile-menu{display:block}
+ .hero{grid-template-columns:1fr;text-align:center;padding-top:65px}
+ .hero p{margin:auto}
+ .actions{justify-content:center}
+ .hero-visual{order:-1}
+ .coin{width:min(70%,340px)}
+ .grid-4{grid-template-columns:repeat(2,1fr)}
+ .market-layout{grid-template-columns:1fr}
+ .timeline{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+ .container{padding:0 17px}
+ .hero{min-height:auto;padding-bottom:50px}
+ .hero h1{letter-spacing:-2px}
+ .coin{width:min(85%,300px)}
+ .grid-4,.grid-3,.grid-2,.timeline{grid-template-columns:1fr}
+ .section{padding:55px 0}
+ .card{padding:20px}
+ .stat-value{font-size:24px}
+ .nav{min-height:70px}
+ .btn{padding:12px 15px}
+ .brand{font-size:21px}
+ .brand-mark{width:34px;height:34px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="container nav">
+  <a class="brand" href="#">
+   <span class="brand-mark">Z</span>
+   ZRON
+  </a>
+  <nav>
+   <a href="#home">Home</a>
+   <a href="#market">Markets</a>
+   <a href="#swap">Swap</a>
+   <a href="#ecosystem">Ecosystem</a>
+   <a href="#tokenomics">Tokenomics</a>
+   <a href="#roadmap">Roadmap</a>
+  </nav>
+  <button class="btn btn-gold" id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
+ </div>
+</header>
+
+<main>
+
+<section id="home" class="container hero">
+ <div>
+  <div class="eyebrow"><span class="dot"></span> POWERED BY BNB SMART CHAIN</div>
+  <h1>THE GOLDEN<br>STANDARD OF<br><span class="gradient-text">WEB3.</span></h1>
+  <p>
+   Discover ZRON, a digital asset on BNB Smart Chain.
+   Explore on-chain markets, connect your wallet,
+   and access decentralized trading through a
+   powerful Web3 experience.
+  </p>
+  <div class="actions">
+   <a href="#swap" class="btn btn-gold">Trade ZRON ↗</a>
+   <a href="#market" class="btn btn-outline">Explore Markets</a>
+   <button class="btn" onclick="addToken()">+ Add to Wallet</button>
+  </div>
+  <p style="font-size:12px;margin-top:25px">
+   Contract verified by user input, not independently audited.
+  </p>
+ </div>
+ <div class="hero-visual">
+  <img class="coin" id="heroLogo"
+   src="https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png"
+   alt="ZRON Gold Coin"
+   onerror="this.style.display='none';document.getElementById('fallbackLogo').style.display='grid'">
+  <div id="fallbackLogo" class="coin-fallback">
+   <div><strong>Z</strong><h2>ZRON</h2></div>
+  </div>
+ </div>
+</section>
+
+<section class="container">
+ <div class="grid grid-4">
+  <div class="card">
+   <div class="stat-label">ZRON Price</div>
+   <div class="stat-value" id="heroPrice">—</div>
+   <div class="stat-sub" id="heroChange">Awaiting market data</div>
+  </div>
+  <div class="card">
+   <div class="stat-label">Market Cap</div>
+   <div class="stat-value" id="marketCap">—</div>
+   <div class="stat-sub">As reported by market provider</div>
+  </div>
+  <div class="card">
+   <div class="stat-label">24H Volume</div>
+   <div class="stat-value" id="volume24">—</div>
+   <div class="stat-sub">Live liquidity-pool data</div>
+  </div>
+  <div class="card">
+   <div class="stat-label">Token Holders</div>
+   <div class="stat-value" id="holderCount">—</div>
+   <div class="stat-sub" id="holderStatus">BscScan data</div>
+  </div>
+ </div>
+</section>
+
+<section id="market" class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">REAL-TIME ANALYTICS</div>
+   <h2>Live <span class="gold">Market Intelligence</span></h2>
+   <p>Explore available ZRON liquidity pools and on-chain trading activity.</p>
+  </div>
+  <div class="market-layout">
+   <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap">
+     <div>
+      <h3>ZRON / USD</h3>
+      <div class="stat-value gold" id="chartPrice">—</div>
+     </div>
+     <div id="chartChange" style="font-size:14px">—</div>
+    </div>
+    <div class="chart-controls">
+     <button class="small-btn" onclick="setChartRange('1h',this)">1H</button>
+     <button class="small-btn" onclick="setChartRange('6h',this)">6H</button>
+     <button class="small-btn active" onclick="setChartRange('24h',this)">24H</button>
+     <button class="small-btn" onclick="setChartRange('7d',this)">7D</button>
+    </div>
+    <div class="chart-box">
+     <canvas id="priceChart"></canvas>
+    </div>
+    <p id="chartNote">Historical chart data will load when a supported market feed is available.</p>
+    <div class="actions">
+     <a id="dexChartLink" href="https://dexscreener.com/bsc" target="_blank" rel="noopener" class="btn btn-outline">View DEX Chart ↗</a>
+     <button class="btn" onclick="loadMarket()">Refresh Market</button>
+    </div>
+   </div>
+   <div class="card">
+    <h3>Market Overview</h3>
+    <div class="info-row"><span>24H Price Change</span><strong id="change24">—</strong></div>
+    <div class="info-row"><span>Liquidity</span><strong id="liquidity">—</strong></div>
+    <div class="info-row"><span>FDV</span><strong id="fdv">—</strong></div>
+    <div class="info-row"><span>24H Buys</span><strong id="buys">—</strong></div>
+    <div class="info-row"><span>24H Sells</span><strong id="sells">—</strong></div>
+    <div class="info-row"><span>DEX</span><strong id="dexName">—</strong></div>
+    <div class="info-row"><span>Pool Address</span><strong id="poolAddress">—</strong></div>
+    <div class="notice" id="marketStatus">Checking on-chain markets...</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="swap" class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">DECENTRALIZED TRADING</div>
+   <h2>ZRON <span class="gold">Swap Terminal</span></h2>
+   <p>Swap through PancakeSwap V2 liquidity pools on BNB Smart Chain.</p>
+  </div>
+  <div class="card swap-shell">
+   <div class="swap-tabs">
+    <button class="btn btn-gold" id="buyTab" onclick="setSwapMode('buy')">Buy ZRON</button>
+    <button class="btn" id="sellTab" onclick="setSwapMode('sell')">Sell ZRON</button>
+   </div>
+   <div class="swap-input">
+    <label><span>You Pay</span><span id="payBalance">Balance: —</span></label>
+    <input id="payAmount" type="number" min="0" step="any" placeholder="0.00" oninput="quoteSwap()">
+    <select id="payToken" onchange="changePayToken()"></select>
+   </div>
+   <div class="swap-middle">
+    <button onclick="reverseSwap()">⇅</button>
+   </div>
+   <div class="swap-input">
+    <label><span>You Receive (Estimated)</span><span id="receiveBalance">Balance: —</span></label>
+    <input id="receiveAmount" readonly placeholder="0.00">
+    <select id="receiveToken" disabled></select>
+   </div>
+   <div class="info-row"><span>Exchange Rate</span><strong id="exchangeRate">—</strong></div>
+   <div class="info-row"><span>Slippage Tolerance</span><strong>1.0%</strong></div>
+   <div class="info-row"><span>Estimated Minimum Received</span><strong id="minimumReceived">—</strong></div>
+   <div class="info-row"><span>Network</span><strong>BNB Smart Chain</strong></div>
+   <div class="notice" id="swapStatus">
+    Quotes depend on available PancakeSwap V2 liquidity.
+    Swaps are real blockchain transactions and require gas.
+    Fee-on-transfer tokens are not supported by this interface.
+   </div>
+   <button class="btn btn-gold" style="width:100%;margin-top:12px" id="swapBtn" onclick="executeSwap()">Connect Wallet to Swap</button>
+   <div class="actions" style="justify-content:center">
+    <a id="externalSwap" href="https://pancakeswap.finance/swap" target="_blank" rel="noopener" class="btn btn-outline">Open PancakeSwap ↗</a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="ecosystem" class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">DISCOVER ZRON</div>
+   <h2>Built for the <span class="gold">Web3 Era</span></h2>
+   <p>Accessible tools for interacting with ZRON on BNB Smart Chain.</p>
+  </div>
+  <div class="grid grid-3">
+   <div class="card">
+    <div class="feature-icon">◈</div>
+    <h3>Decentralized Trading</h3>
+    <p>Access permissionless trading through compatible liquidity pools and decentralized exchanges.</p>
+   </div>
+   <div class="card">
+    <div class="feature-icon">◉</div>
+    <h3>Web3 Wallet</h3>
+    <p>Connect an EVM-compatible wallet, view token balances, and interact directly with blockchain contracts.</p>
+   </div>
+   <div class="card">
+    <div class="feature-icon">⌁</div>
+    <h3>On-Chain Transparency</h3>
+    <p>Explore transactions, token balances, contract data, and market activity through public blockchain tools.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="tokenomics" class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">TOKEN ECONOMICS</div>
+   <h2>ZRON <span class="gold">Tokenomics</span></h2>
+  </div>
+  <div class="grid grid-2">
+   <div class="card">
+    <h3>Token Information</h3>
+    <div class="info-row"><span>Name</span><strong>ZRON</strong></div>
+    <div class="info-row"><span>Symbol</span><strong>ZRON</strong></div>
+    <div class="info-row"><span>Blockchain</span><strong>BNB Smart Chain</strong></div>
+    <div class="info-row"><span>Declared Total Supply</span><strong>1,000,000,000</strong></div>
+    <div class="info-row"><span>Circulating Supply</span><strong>To Be Announced</strong></div>
+    <div class="info-row"><span>On-Chain Total Supply</span><strong id="chainSupply">—</strong></div>
+    <div class="info-row"><span>Decimals</span><strong id="tokenDecimals">—</strong></div>
+   </div>
+   <div class="card">
+    <h3>Smart Contract</h3>
+    <p>Official token contract provided by the ZRON project.</p>
+    <div class="contract-box" id="contractText"></div>
+    <div class="actions">
+     <button class="btn btn-gold" onclick="copyContract()">Copy Address</button>
+     <a class="btn btn-outline" id="bscLink" target="_blank" rel="noopener">View on BscScan ↗</a>
+     <button class="btn" onclick="addToken()">Add ZRON</button>
+    </div>
+    <div class="notice">
+     Always independently verify the contract address before trading.
+     Token supply, ownership permissions, and contract security
+     should be reviewed on-chain.
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="roadmap" class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">FUTURE DEVELOPMENT</div>
+   <h2>Our <span class="gold">Roadmap</span></h2>
+   <p>Proposed development areas. Dates and milestones are subject to official confirmation.</p>
+  </div>
+  <div class="timeline">
+   <div class="card">
+    <small>PHASE 01</small>
+    <h3>Foundation</h3>
+    <ul>
+     <li>Token deployment</li>
+     <li>Brand identity</li>
+     <li>Website launch</li>
+    </ul>
+   </div>
+   <div class="card">
+    <small>PHASE 02</small>
+    <h3>Market Access</h3>
+    <ul>
+     <li>DEX liquidity planning</li>
+     <li>Trading integrations</li>
+     <li>Community channels</li>
+    </ul>
+   </div>
+   <div class="card">
+    <small>PHASE 03</small>
+    <h3>Expansion</h3>
+    <ul>
+     <li>Market data integrations</li>
+     <li>Community growth</li>
+     <li>Ecosystem partnerships</li>
+    </ul>
+   </div>
+   <div class="card">
+    <small>PHASE 04</small>
+    <h3>Web3 Development</h3>
+    <ul>
+     <li>Utility exploration</li>
+     <li>Additional integrations</li>
+     <li>Long-term ecosystem planning</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="whitepaper" class="section">
+ <div class="container">
+  <div class="card" style="text-align:center;padding:55px 25px">
+   <div class="tag">PROJECT DOCUMENTATION</div>
+   <h2 style="font-size:38px">ZRON <span class="gold">Whitepaper</span></h2>
+   <p>Official technical documentation is being prepared.</p>
+   <div class="notice" style="max-width:580px;margin:25px auto">
+    A final whitepaper has not yet been provided.
+    Technical architecture, distribution, and utility details
+    will be published after confirmation.
+   </div>
+   <a href="#tokenomics" class="btn btn-gold">Explore Token Information</a>
+  </div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="container">
+  <div class="section-heading">
+   <div class="tag">WEB3 ACCESS</div>
+   <h2>Your <span class="gold">Wallet Dashboard</span></h2>
+  </div>
+  <div class="card" style="max-width:750px;margin:auto">
+   <div class="info-row"><span>Wallet</span><strong class="wallet-address" id="walletAddress">Not Connected</strong></div>
+   <div class="info-row"><span>BNB Balance</span><strong id="bnbBalance">—</strong></div>
+   <div class="info-row"><span>ZRON Balance</span><strong id="zronBalance">—</strong></div>
+   <div class="info-row"><span>Network</span><strong id="networkName">—</strong></div>
+   <div class="actions">
+    <button class="btn btn-gold" onclick="connectWallet()">Connect Wallet</button>
+    <button class="btn btn-outline" onclick="switchBSC()">Switch to BSC</button>
+    <button class="btn" onclick="addToken()">Add ZRON Token</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ <div class="container footer-row">
+  <div>© 2026 ZRON. All rights reserved.</div>
+  <div>Built on BNB Smart Chain · Decentralized Web3 Access</div>
+  <div>Cryptocurrency trading involves financial risk.</div>
+ </div>
+</footer>
+
+<div class="status" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =====================================================
+   ZRON CONFIGURATION
+===================================================== */
+
+const CONFIG = {
+ token:"0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1",
+ chainId:56,
+ chainHex:"0x38",
+ rpc:"https://bsc-dataseed.binance.org/",
+ explorer:"https://bscscan.com",
+ dexApi:"https://api.dexscreener.com/latest/dex/tokens/",
+ chartApi:"https://api.geckoterminal.com/api/v2",
+ router:"0x10ED43C718714eb63d5aA57B78B54704E256024E",
+ factory:"0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73",
+ wbnb:"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+ busd:"0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+ usdt:"0x55d398326f99059fF775485246999027B3197955",
+ logo:"https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png",
+ // Optional: BscScan API V2 key for holder count.
+ bscScanApiKey:""
+};
+
+const ERC20_ABI=[
+ "function balanceOf(address) view returns(uint256)",
+ "function decimals() view returns(uint8)",
+ "function symbol() view returns(string)",
+ "function totalSupply() view returns(uint256)",
+ "function allowance(address,address) view returns(uint256)",
+ "function approve(address,uint256) returns(bool)"
+];
+
+const ROUTER_ABI=[
+ "function getAmountsOut(uint256,address[]) view returns(uint256[])",
+ "function swapExactETHForTokens(uint256,address[],address,uint256) payable returns(uint256[])",
+ "function swapExactTokensForETH(uint256,uint256,address[],address,uint256) returns(uint256[])",
+ "function swapExactTokensForTokens(uint256,uint256,address[],address,uint256) returns(uint256[])"
+];
+
+const FACTORY_ABI=[
+ "function getPair(address,address) view returns(address)"
+];
+
+const ZERO="0x0000000000000000000000000000000000000000";
+
+let provider=null;
+let signer=null;
+let wallet=null;
+let readProvider=null;
+let tokenDecimals=18;
+let chart=null;
+let selectedRange="24h";
+let swapMode="buy";
+let swapQuote=null;
+let quoteNonce=0;
+let marketPair=null;
+let toastTimer=null;
+
+const $=id=>document.getElementById(id);
+
+function notify(message){
+ const el=$("toast");
+ el.textContent=message;
+ el.style.display="block";
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>el.style.display="none",6000);
+}
+
+function shortAddress(a){
+ return a?a.slice(0,7)+"..."+a.slice(-5):"—";
+}
+
+function formatNumber(v,d=2){
+ const n=Number(v);
+ if(!Number.isFinite(n))return "—";
+ return n.toLocaleString("en-US",{maximumFractionDigits:d});
+}
+
+function money(v){
+ const n=Number(v);
+ if(!Number.isFinite(n))return "—";
+ if(n>=1e9)return "$"+(n/1e9).toFixed(2)+"B";
+ if(n>=1e6)return "$"+(n/1e6).toFixed(2)+"M";
+ if(n>=1e3)return "$"+(n/1e3).toFixed(2)+"K";
+ if(n>0&&n<.0001)return "$"+n.toPrecision(4);
+ return "$"+n.toLocaleString("en-US",{maximumFractionDigits:6});
+}
+
+function parseError(e){
+ return e?.data?.message||e?.reason||e?.error?.message||e?.message||"Unknown error";
+}
+
+function contract(address,abi,connection){
+ return new ethers.Contract(address,abi,connection);
+}
+
+function getReadProvider(){
+ if(!readProvider){
+  readProvider=new ethers.providers.JsonRpcProvider(CONFIG.rpc,CONFIG.chainId);
+ }
+ return readProvider;
+}
+
+function tokenContract(connection){
+ return contract(CONFIG.token,ERC20_ABI,connection);
+}
+
+function getSelectedPayToken(){
+ return $("payToken").value;
+}
+
+function getPayAddress(){
+ const v=getSelectedPayToken();
+ if(v==="BNB")return CONFIG.wbnb;
+ if(v==="USDT")return CONFIG.usdt;
+ if(v==="BUSD")return CONFIG.busd;
+ return CONFIG.token;
+}
+
+function getPayDecimals(){
+ if(getSelectedPayToken()==="BNB")return 18;
+ if(getSelectedPayToken()==="ZRON")return tokenDecimals;
+ return 18;
+}
+
+function setSwapStatus(msg){
+ $("swapStatus").textContent=msg;
+}
+
+function resetQuote(){
+ swapQuote=null;
+ $("receiveAmount").value="";
+ $("minimumReceived").textContent="—";
+ $("exchangeRate").textContent="—";
+ updateSwapButton();
+}
+
+function setSwapMode(mode){
+ swapMode=mode;
+ $("buyTab").className="btn"+(mode==="buy"?" btn-gold":"");
+ $("sellTab").className="btn"+(mode==="sell"?" btn-gold":"");
+ $("payAmount").value="";
+ $("receiveAmount").value="";
+ fillSwapOptions();
+ resetQuote();
+ updateBalances();
+}
+
+function fillSwapOptions(){
+ const pay=$("payToken");
+ const receive=$("receiveToken");
+ pay.innerHTML="";
+ receive.innerHTML="";
+ const options=swapMode==="buy"
+  ?["BNB","USDT","BUSD"]
+  :["ZRON"];
+ options.forEach(x=>pay.add(new Option(x,x)));
+ receive.add(new Option(swapMode==="buy"?"ZRON":"BNB",
+                            swapMode==="buy"?"ZRON":"BNB"));
+}
+
+function changePayToken(){
+ resetQuote();
+ quoteSwap();
+ updateBalances();
+}
+
+function reverseSwap(){
+ setSwapMode(swapMode==="buy"?"sell":"buy");
+}
+
+async function switchBSC(){
+ if(!window.ethereum){
+  notify("Install MetaMask or another compatible wallet.");
+  return false;
+ }
+ try{
+  await window.ethereum.request({
+   method:"wallet_switchEthereumChain",
+   params:[{chainId:CONFIG.chainHex}]
+  });
+  return true;
+ }catch(e){
+  if(e.code===4902){
+   try{
+    await window.ethereum.request({
+     method:"wallet_addEthereumChain",
+     params:[{
+      chainId:CONFIG.chainHex,
+      chainName:"BNB Smart Chain",
+      nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18},
+      rpcUrls:[CONFIG.rpc],
+      blockExplorerUrls:[CONFIG.explorer]
+     }]
+    });
+    return true;
+   }catch(err){
+    notify(parseError(err));
+    return false;
+   }
+  }
+  notify(parseError(e));
+  return false;
+ }
+}
+
+async function connectWallet(){
+ if(!window.ethereum){
+  notify("No injected Web3 wallet detected. Install MetaMask.");
+  return;
+ }
+ try{
+  const ok=await switchBSC();
+  if(!ok)return;
+  provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+  await provider.send("eth_requestAccounts",[]);
+  signer=provider.getSigner();
+  wallet=await signer.getAddress();
+  $("walletAddress").textContent=wallet;
+  $("connectBtn").textContent=shortAddress(wallet);
+  await updateBalances();
+  updateSwapButton();
+  notify("Wallet connected successfully.");
+ }catch(e){
+  notify(parseError(e));
+ }
+}
+
+async function updateBalances(){
+ if(!wallet||!provider)return;
+ try{
+  const net=await provider.getNetwork();
+  $("networkName").textContent=net.chainId===56?"BNB Smart Chain":"Wrong Network";
+  if(net.chainId!==56)return;
+  const bnb=await provider.getBalance(wallet);
+  const zron=await tokenContract(provider).balanceOf(wallet);
+  $("bnbBalance").textContent=formatNumber(ethers.utils.formatEther(bnb),6)+" BNB";
+  $("zronBalance").textContent=formatNumber(
+   ethers.utils.formatUnits(zron,tokenDecimals),4
+  )+" ZRON";
+  const pay=getSelectedPayToken();
+  let balance="—";
+  if(pay==="BNB")balance=ethers.utils.formatEther(bnb);
+  else if(pay==="ZRON")balance=ethers.utils.formatUnits(zron,tokenDecimals);
+  else{
+   const addr=getPayAddress();
+   const b=await contract(addr,ERC20_ABI,provider).balanceOf(wallet);
+   balance=ethers.utils.formatUnits(b,18);
+  }
+  $("payBalance").textContent="Balance: "+formatNumber(balance,5);
+  $("receiveBalance").textContent=swapMode==="buy"
+   ?"Balance: "+formatNumber(ethers.utils.formatUnits(zron,tokenDecimals),5)
+   :"Balance: "+formatNumber(ethers.utils.formatEther(bnb),5);
+ }catch(e){
+  console.warn("Balance error",e);
+ }
+}
+
+async function loadTokenInfo(){
+ try{
+  const t=tokenContract(getReadProvider());
+  const [dec,supply]=await Promise.all([
+   t.decimals(),t.totalSupply()
+  ]);
+  tokenDecimals=Number(dec);
+  $("tokenDecimals").textContent=tokenDecimals;
+  $("chainSupply").textContent=formatNumber(
+   ethers.utils.formatUnits(supply,tokenDecimals),2
+  );
+ }catch(e){
+  $("chainSupply").textContent="Unavailable";
+  $("tokenDecimals").textContent="Unavailable";
+  console.warn(e);
+ }
+}
+
+/* =====================================================
+   ADD TOKEN TO WALLET
+===================================================== */
+
+async function addToken(){
+ if(!window.ethereum){
+  notify("Install MetaMask to add ZRON.");
+  return;
+ }
+ try{
+  const ok=await switchBSC();
+  if(!ok)return;
+  const t=tokenContract(getReadProvider());
+  const [symbol,decimals]=await Promise.all([t.symbol(),t.decimals()]);
+  if(symbol.toUpperCase()!=="ZRON"){
+   notify("Token symbol differs from ZRON. Please verify the contract.");
+   return;
+  }
+  const added=await window.ethereum.request({
+   method:"wallet_watchAsset",
+   params:{
+    type:"ERC20",
+    options:{
+     address:CONFIG.token,
+     symbol:symbol,
+     decimals:Number(decimals),
+     image:CONFIG.logo
+    }
+   }
+  });
+  notify(added?"ZRON added to wallet.":"Token addition was cancelled.");
+ }catch(e){
+  notify(parseError(e));
+ }
+}
+
+function copyContract(){
+ navigator.clipboard.writeText(CONFIG.token)
+  .then(()=>notify("Contract address copied."))
+  .catch(()=>notify("Copy failed. Please select the address manually."));
+}
+
+/* =====================================================
+   DEXSCREENER MARKET DATA
+===================================================== */
+
+async function loadMarket(){
+ $("marketStatus").textContent="Fetching live market data...";
+ try{
+  const response=await fetch(CONFIG.dexApi+CONFIG.token,{cache:"no-store"});
+  if(!response.ok)throw new Error("Market API unavailable");
+  const data=await response.json();
+  const pairs=(data.pairs||[]).filter(p=>
+   p.chainId==="bsc" &&
+   (p.baseToken?.address?.toLowerCase()===CONFIG.token.toLowerCase() ||
+    p.quoteToken?.address?.toLowerCase()===CONFIG.token.toLowerCase())
+  );
+  pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0));
+  if(!pairs.length){
+   $("marketStatus").textContent="No indexed BSC liquidity pool found for ZRON.";
+   $("chartNote").textContent="No market chart is available yet.";
+   return;
+  }
+  const p=pairs[0];
+  marketPair=p;
+  const tokenIsBase=p.baseToken?.address?.toLowerCase()===CONFIG.token.toLowerCase();
+  let price=Number(p.priceUsd);
+  if(!tokenIsBase){
+   const quotePrice=Number(p.priceUsd);
+   if(quotePrice>0)price=1/quotePrice;
+   else price=NaN;
+  }
+  const change=tokenIsBase?Number(p.priceChange?.h24):NaN;
+  $("heroPrice").textContent=money(price);
+  $("chartPrice").textContent=money(price);
+  $("heroChange").textContent=Number.isFinite(change)
+   ?(change>=0?"+":"")+change.toFixed(2)+"% (24H)"
+   :"Price change unavailable";
+  $("chartChange").textContent=Number.isFinite(change)
+   ?(change>=0?"+":"")+change.toFixed(2)+"%"
+   :"—";
+  $("chartChange").style.color=change>=0?"var(--green)":"var(--red)";
+  $("change24").textContent=Number.isFinite(change)?change.toFixed(2)+"%":"—";
+  $("marketCap").textContent=tokenIsBase?money(p.marketCap):"—";
+  $("volume24").textContent=money(p.volume?.h24);
+  $("liquidity").textContent=money(p.liquidity?.usd);
+  $("fdv").textContent=tokenIsBase?money(p.fdv):"—";
+  $("buys").textContent=formatNumber(p.txns?.h24?.buys,0);
+  $("sells").textContent=formatNumber(p.txns?.h24?.sells,0);
+  $("dexName").textContent=p.dexId||"—";
+  $("poolAddress").textContent=shortAddress(p.pairAddress);
+  $("marketStatus").textContent="Market data loaded from DexScreener. Highest-liquidity indexed BSC pool selected.";
+  if(p.url)$("dexChartLink").href=p.url;
+  await loadHistoricalChart();
+ }catch(e){
+  $("marketStatus").textContent="Live market data is temporarily unavailable.";
+  console.warn(e);
+ }
+}
+
+/* =====================================================
+   REAL HISTORICAL CHART
+   GeckoTerminal OHLCV API
+===================================================== */
+
+function setChartRange(range,button){
+ selectedRange=range;
+ document.querySelectorAll(".small-btn").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ loadHistoricalChart();
+}
+
+async function loadHistoricalChart(){
+ if(!marketPair){
+  $("chartNote").textContent="No active market pool found.";
+  return;
+ }
+ const pool=marketPair.pairAddress;
+ const settings={
+  "1h":{timeframe:"minute",aggregate:1,limit:60},
+  "6h":{timeframe:"minute",aggregate:5,limit:72},
+  "24h":{timeframe:"hour",aggregate:1,limit:24},
+  "7d":{timeframe:"hour",aggregate:4,limit:42}
+ };
+ const s=settings[selectedRange];
+ $("chartNote").textContent="Loading historical market candles...";
+ try{
+  const url=CONFIG.chartApi+
+   "/networks/bsc/pools/"+pool+
+   "/ohlcv/"+s.timeframe+
+   "?aggregate="+s.aggregate+
+   "&limit="+s.limit+
+   "&currency=usd";
+  const r=await fetch(url,{headers:{accept:"application/json"}});
+  if(!r.ok)throw new Error("Historical data unavailable");
+  const json=await r.json();
+  const raw=json.data?.attributes?.ohlcv_list||[];
+  if(!raw.length)throw new Error("No historical candles");
+  const isBase=marketPair.baseToken?.address?.toLowerCase()===
+               CONFIG.token.toLowerCase();
+  if(!isBase){
+   throw new Error("Selected pool quotes ZRON as the second asset; open the DEX chart for accurate historical pricing.");
+  }
+  const points=raw.slice().reverse();
+  const labels=points.map(c=>new Date(c[0]*1000).toLocaleString("en-US",{
+   month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"
+  }));
+  const prices=points.map(c=>Number(c[4]));
+  renderChart(labels,prices);
+  $("chartNote").textContent="Historical OHLCV closing prices · GeckoTerminal · "+selectedRange.toUpperCase();
+ }catch(e){
+  if(chart){chart.destroy();chart=null;}
+  $("chartNote").textContent="Historical candles unavailable. Use View DEX Chart for market history.";
+  console.warn(e);
+ }
+}
+
+function renderChart(labels,values){
+ const canvas=$("priceChart");
+ if(chart)chart.destroy();
+ chart=new Chart(canvas,{
+  type:"line",
+  data:{
+   labels,
+   datasets:[{
+    label:"ZRON / USD",
+    data:values,
+    borderColor:"#f7bc42",
+    backgroundColor:"rgba(247,188,66,.09)",
+    fill:true,
+    tension:.25,
+    pointRadius:0,
+    pointHoverRadius:5,
+    borderWidth:2
+   }]
+  },
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   interaction:{mode:"index",intersect:false},
+   plugins:{
+    legend:{display:false},
+    tooltip:{
+     callbacks:{label:c=>"Price: $"+Number(c.parsed.y).toPrecision(7)}
+    }
+   },
+   scales:{
+    x:{
+     ticks:{color:"#858994",maxTicksLimit:6},
+     grid:{display:false}
+    },
+    y:{
+     ticks:{
+      color:"#858994",
+      callback:v=>"$"+Number(v).toPrecision(4)
+     },
+     grid:{color:"rgba(255,255,255,.05)"}
+    }
+   }
+  }
+ });
+}
+
+/* =====================================================
+   TOKEN HOLDERS
+   BscScan V2 API (API KEY REQUIRED)
+===================================================== */
+
+async function loadHolders(){
+ if(!CONFIG.bscScanApiKey){
+  $("holderCount").textContent="—";
+  $("holderStatus").textContent="API key required";
+  return;
+ }
+ try{
+  const url="https://api.etherscan.io/v2/api?chainid=56"+
+   "&module=token&action=tokenholdercount"+
+   "&contractaddress="+CONFIG.token+
+   "&apikey="+encodeURIComponent(CONFIG.bscScanApiKey);
+  const r=await fetch(url);
+  if(!r.ok)throw new Error("Holder API failed");
+  const data=await r.json();
+  if(data.status==="1"&&/^\d+$/.test(String(data.result))){
+   $("holderCount").textContent=formatNumber(data.result,0);
+   $("holderStatus").textContent="On-chain holder count";
+  }else{
+   $("holderStatus").textContent="Holder endpoint unavailable";
+  }
+ }catch(e){
+  $("holderStatus").textContent="Holder API unavailable";
+ }
+}
+
+/* =====================================================
+   REAL PANCAKESWAP V2 SWAP
+===================================================== */
+
+async function findRoute(input,output){
+ const reader=getReadProvider();
+ const factory=contract(CONFIG.factory,FACTORY_ABI,reader);
+ const intermediates=[CONFIG.wbnb,CONFIG.usdt,CONFIG.busd];
+ const candidates=[[input,output]];
+ for(const mid of intermediates){
+  if(mid.toLowerCase()!==input.toLowerCase() &&
+     mid.toLowerCase()!==output.toLowerCase()){
+   candidates.push([input,mid,output]);
+  }
+ }
+ const router=contract(CONFIG.router,ROUTER_ABI,reader);
+ const valid=[];
+ for(const path of candidates){
+  try{
+   let exists=true;
+   for(let i=0;i<path.length-1;i++){
+    const pair=await factory.getPair(path[i],path[i+1]);
+    if(pair.toLowerCase()===ZERO.toLowerCase()){
+     exists=false;break;
+    }
+   }
+   if(exists)valid.push(path);
+  }catch(e){console.warn(e);}
+ }
+ return {router,paths:valid};
+}
+
+async function quoteSwap(){
+ const nonce=++quoteNonce;
+ resetQuote();
+ const raw=$("payAmount").value;
+ if(!raw||Number(raw)<=0)return;
+ if(!/^\d+(\.\d+)?$/.test(raw)){
+  setSwapStatus("Enter a valid amount.");
+  return;
+ }
+ try{
+  const pay=getSelectedPayToken();
+  const input=getPayAddress();
+  const output=swapMode==="buy"?CONFIG.token:CONFIG.wbnb;
+  const decimals=getPayDecimals();
+  const amountIn=ethers.utils.parseUnits(raw,decimals);
+  if(amountIn.isZero())return;
+  setSwapStatus("Finding PancakeSwap V2 route and requesting quote...");
+  const {router,paths}=await findRoute(input,output);
+  if(nonce!==quoteNonce)return;
+  if(!paths.length){
+   setSwapStatus("No PancakeSwap V2 liquidity route found. Direct swap is unavailable.");
+   return;
+  }
+  let best=null;
+  for(const path of paths){
+   try{
+    const amounts=await router.getAmountsOut(amountIn,path);
+    const out=amounts[amounts.length-1];
+    if(!best||out.gt(best.amountOut)){
+     best={path,amountOut:out};
+    }
+   }catch(e){console.warn(e);}
+  }
+  if(nonce!==quoteNonce)return;
+  if(!best){
+   setSwapStatus("No executable quote found. Check pool liquidity.");
+   return;
+  }
+  const outDecimals=swapMode==="buy"?tokenDecimals:18;
+  const outputAmount=ethers.utils.formatUnits(best.amountOut,outDecimals);
+  const minOut=best.amountOut.mul(9900).div(10000);
+  swapQuote={
+   amountIn,amountOut:best.amountOut,minOut,
+   path:best.path,pay,outDecimals,raw
+  };
+  $("receiveAmount").value=Number(outputAmount).toPrecision(8);
+  $("minimumReceived").textContent=
+   formatNumber(ethers.utils.formatUnits(minOut,outDecimals),7)+
+   " "+(swapMode==="buy"?"ZRON":"BNB");
+  const rate=Number(outputAmount)/Number(raw);
+  $("exchangeRate").textContent=
+   "1 "+pay+" ≈ "+formatNumber(rate,8)+" "+
+   (swapMode==="buy"?"ZRON":"BNB");
+  setSwapStatus("Live PancakeSwap V2 quote. Price impact and network gas are not included in the displayed minimum.");
+  updateSwapButton();
+ }catch(e){
+  if(nonce!==quoteNonce)return;
+  setSwapStatus("Quote unavailable: "+parseError(e));
+ }
+}
+
+function updateSwapButton(){
+ const btn=$("swapBtn");
+ if(!wallet){
+  btn.textContent="Connect Wallet to Swap";
+ }else if(!swapQuote){
+  btn.textContent="Enter Amount / Get Quote";
+ }else{
+  btn.textContent="Swap Now";
+ }
+}
+
+async function ensureAllowance(tokenAddress,amount){
+ const t=contract(tokenAddress,ERC20_ABI,signer);
+ const allowance=await t.allowance(wallet,CONFIG.router);
+ if(allowance.gte(amount))return;
+ setSwapStatus("Token approval required. Confirm in your wallet.");
+ const tx=await t.approve(CONFIG.router,amount);
+ setSwapStatus("Waiting for token approval confirmation...");
+ const receipt=await tx.wait(1);
+ if(receipt.status!==1)throw new Error("Approval failed");
+}
+
+async function executeSwap(){
+ if(!wallet){
+  await connectWallet();
+  return;
+ }
+ if(!swapQuote){
+  notify("Enter an amount and wait for a valid quote.");
+  return;
+ }
+ const btn=$("swapBtn");
+ btn.disabled=true;
+ try{
+  const ok=await switchBSC();
+  if(!ok)return;
+  provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+  signer=provider.getSigner();
+  const active=await signer.getAddress();
+  if(active.toLowerCase()!==wallet.toLowerCase()){
+   wallet=active;
+   throw new Error("Wallet account changed. Refresh your quote.");
+  }
+  const net=await provider.getNetwork();
+  if(net.chainId!==56)throw new Error("Wrong network");
+  const q=swapQuote;
+  const currentRaw=$("payAmount").value;
+  if(currentRaw!==q.raw)throw new Error("Amount changed. Request a new quote.");
+  const router=contract(CONFIG.router,ROUTER_ABI,signer);
+  const latest=await router.getAmountsOut(q.amountIn,q.path);
+  const latestOut=latest[latest.length-1];
+  if(latestOut.lt(q.minOut)){
+   throw new Error("Price moved beyond slippage tolerance. Refresh quote.");
+  }
+  const deadline=Math.floor(Date.now()/1000)+1200;
+  let tx;
+  setSwapStatus("Preparing transaction...");
+  if(q.pay==="BNB"){
+   const bnbBalance=await provider.getBalance(wallet);
+   if(bnbBalance.lte(q.amountIn)){
+    throw new Error("Insufficient BNB. Keep additional BNB for gas.");
+   }
+   tx=await router.swapExactETHForTokens(
+    q.minOut,q.path,wallet,deadline,{value:q.amountIn}
+   );
+  }else{
+   const inputAddress=getPayAddress();
+   const inputToken=contract(inputAddress,ERC20_ABI,provider);
+   const balance=await inputToken.balanceOf(wallet);
+   if(balance.lt(q.amountIn))throw new Error("Insufficient token balance.");
+   await ensureAllowance(inputAddress,q.amountIn);
+   if(swapMode==="sell"){
+    tx=await router.swapExactTokensForETH(
+     q.amountIn,q.minOut,q.path,wallet,deadline
+    );
+   }else{
+    tx=await router.swapExactTokensForTokens(
+     q.amountIn,q.minOut,q.path,wallet,deadline
+    );
+   }
+  }
+  setSwapStatus("Transaction submitted: "+tx.hash);
+  notify("Transaction submitted. Waiting for confirmation...");
+  const receipt=await tx.wait(1);
+  if(receipt.status!==1)throw new Error("Swap transaction reverted");
+  setSwapStatus("Swap confirmed: "+tx.hash);
+  notify("Swap confirmed successfully.");
+  $("payAmount").value="";
+  resetQuote();
+  await updateBalances();
+ }catch(e){
+  setSwapStatus("Swap not completed: "+parseError(e));
+  notify(parseError(e));
+ }finally{
+  btn.disabled=false;
+  updateSwapButton();
+ }
+}
+
+/* =====================================================
+   INITIALIZATION
+===================================================== */
+
+async function init(){
+ $("contractText").textContent=CONFIG.token;
+ $("bscLink").href=CONFIG.explorer+"/token/"+CONFIG.token;
+ $("externalSwap").href=
+  "https://pancakeswap.finance/swap?chain=bsc&outputCurrency="+CONFIG.token;
+ fillSwapOptions();
+ await Promise.allSettled([
+  loadTokenInfo(),
+  loadMarket(),
+  loadHolders()
+ ]);
+ if(window.ethereum){
+  window.ethereum.on("accountsChanged",async accounts=>{
+   wallet=accounts[0]||null;
+   provider=wallet?new ethers.providers.Web3Provider(window.ethereum,"any"):null;
+   signer=provider?provider.getSigner():null;
+   $("walletAddress").textContent=wallet||"Not Connected";
+   $("connectBtn").textContent=wallet?shortAddress(wallet):"Connect Wallet";
+   resetQuote();
+   if(wallet)await updateBalances();
+   else{
+    $("bnbBalance").textContent="—";
+    $("zronBalance").textContent="—";
+   }
+  });
+  window.ethereum.on("chainChanged",()=>{
+   resetQuote();
+   if(wallet)updateBalances();
+  });
+ }
+}
+
+document.addEventListener("DOMContentLoaded",init);
+setInterval(loadMarket,60000);
+setInterval(()=>{
+ if(wallet)updateBalances();
+},30000);
+
+</script>
+</body>
+</html>
