@@ -4,1127 +4,746 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07080a">
-<meta name="description" content="ZRON — The Golden Dimension of Web3. Discover a new digital asset experience powered by BNB Smart Chain.">
-<title>ZRON — The Golden Dimension of Web3</title>
+<meta name="theme-color" content="#08090d">
+<meta name="description" content="ZRON — The Golden Dimension of Web3. A bold digital asset experience built on BNB Smart Chain.">
+<title>ZRON | The Golden Dimension of Web3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
 <style>
 :root{
-  --bg:#07080a;
-  --surface:#111217;
-  --surface2:#17191f;
-  --line:rgba(255,202,91,.14);
-  --gold:#f8bd4b;
-  --gold2:#ffdf93;
-  --white:#f8f8fa;
-  --muted:#91939e;
-  --green:#35dfa6;
-  --red:#ff6b7a;
+--bg:#08090d;--bg2:#101116;--card:#14161d;
+--gold:#f7bf50;--gold2:#ffe4a2;--gold3:#a56d17;
+--white:#f6f7fa;--muted:#9498a5;
+--line:rgba(255,202,98,.15);
+--green:#30dba4;--red:#ff6b80;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  color:var(--white);
-  background:var(--bg);
-  font-family:'DM Sans',sans-serif;
-  overflow-x:hidden;
-}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
 button,input{font:inherit}
 button{cursor:pointer}
-button:disabled{cursor:not-allowed;opacity:.5}
-a{text-decoration:none;color:inherit}
+button:disabled{opacity:.5;cursor:not-allowed}
 ::selection{background:var(--gold);color:#111}
-::-webkit-scrollbar{width:7px}
-::-webkit-scrollbar-thumb{background:#65491d;border-radius:10px}
-#space{
-  position:fixed;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:-2;
-}
-.background-glow{
-  position:fixed;inset:0;z-index:-3;pointer-events:none;
-  background:
-    radial-gradient(ellipse at 76% 18%,rgba(201,127,12,.115),transparent 32%),
-    radial-gradient(ellipse at 15% 70%,rgba(117,78,14,.09),transparent 40%),
-    #07080a;
-}
-.container{max-width:1280px;margin:auto;padding:0 26px}
-.topbar{
-  height:31px;background:#bd8825;color:#100d07;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:800;letter-spacing:2.5px;
-  text-align:center;
-}
-header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(8,9,12,.85);
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(25px);
-}
-.nav{
-  min-height:77px;
-  display:flex;align-items:center;justify-content:space-between;gap:22px;
-}
-.brand{
-  display:flex;align-items:center;gap:11px;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:27px;font-weight:700;letter-spacing:3px;
-}
-.brand img{
-  width:43px;height:43px;border-radius:50%;object-fit:cover;
-  box-shadow:0 0 25px rgba(248,189,75,.3);
-}
-.brand-fallback{
-  width:43px;height:43px;border-radius:50%;
-  display:none;place-items:center;
-  border:2px solid var(--gold);color:var(--gold);
-}
-nav{display:flex;gap:25px;align-items:center}
-nav a{
-  font-size:12px;color:#a7a8af;font-weight:700;
-  transition:.25s;
-}
-nav a:hover{color:var(--gold)}
-.btn{
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:14px 22px;
-  color:white;background:#191b21;
-  font-size:12px;font-weight:800;
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  transition:transform .3s,box-shadow .3s,border-color .3s;
-  white-space:nowrap;
-}
-.btn:hover{
-  transform:translateY(-3px);
-  border-color:var(--gold);
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
-.btn-gold{
-  color:#161009;
-  background:linear-gradient(115deg,#c98a22,#f8ca66,#fff0b5,#d79428);
-  background-size:220%;
-  border-color:#f5cb73;
-  box-shadow:0 6px 25px rgba(222,153,34,.22);
-}
-.btn-gold:hover{background-position:100% 0;box-shadow:0 10px 35px #c88e2955}
-.btn-outline{background:transparent;border:1px solid #8c682c}
-.menu-btn{display:none}
-#mobileNav{
-  display:none;padding:15px 24px 22px;
-  border-top:1px solid var(--line);
-}
-#mobileNav a{display:block;padding:11px 0;color:#ddd}
-.hero{
-  min-height:750px;
-  display:grid;grid-template-columns:1.08fr .92fr;
-  align-items:center;gap:20px;
-  padding-top:65px;padding-bottom:80px;
-}
-.eyebrow{
-  display:inline-flex;gap:12px;align-items:center;
-  font-size:10px;letter-spacing:2.6px;font-weight:800;
-  color:var(--gold);
-  background:rgba(255,197,73,.045);
-  border:1px solid var(--line);
-  padding:11px 17px;border-radius:100px;
-}
-.signal{
-  width:8px;height:8px;background:var(--green);
-  border-radius:50%;box-shadow:0 0 13px var(--green);
-  animation:blink 2s infinite;
-}
-@keyframes blink{50%{opacity:.3}}
-.hero h1{
-  font-family:'Space Grotesk';
-  font-size:clamp(49px,6.35vw,86px);
-  line-height:1.04;letter-spacing:-4px;
-  margin:26px 0;
-}
-.gold-text{
-  color:transparent;
-  background:linear-gradient(115deg,#ab6d14,#e9af40,#ffe6a0,#cf8b22,#ffe8a4);
-  background-size:250%;
-  background-clip:text;-webkit-background-clip:text;
-  animation:shine 7s linear infinite;
-}
-@keyframes shine{to{background-position:250% 0}}
-.hero-description{
-  color:var(--muted);line-height:1.9;
-  max-width:580px;font-size:15px;
-}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px}
-.hero-proof{
-  display:flex;align-items:center;gap:16px;
-  margin-top:39px;padding-top:24px;
-  border-top:1px solid var(--line);
-  flex-wrap:wrap;
-}
-.proof-block{display:flex;flex-direction:column;gap:6px}
-.proof-block strong{font-size:17px}
-.proof-block span{font-size:11px;color:var(--muted)}
-.proof-divider{height:35px;width:1px;background:var(--line)}
-/* 3D HERO */
-.hero-art{
-  width:100%;min-height:590px;
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-  perspective:1100px;
-  isolation:isolate;
-}
-.hero-art:before{
-  content:"";position:absolute;inset:11%;
-  border-radius:50%;
-  background:radial-gradient(circle,#da8d2759,transparent 65%);
-  filter:blur(42px);z-index:-1;
-}
-.orbit{
-  position:absolute;border-radius:50%;pointer-events:none;
-  border:1px solid rgba(250,177,45,.26);
-  transform-style:preserve-3d;
-}
-.orbit.one{
-  width:92%;aspect-ratio:1;
-  transform:rotateX(74deg) rotateZ(-28deg);
-  box-shadow:0 0 45px rgba(253,179,44,.12),inset 0 0 25px #f5b43a20;
-  animation:orbitA 10s linear infinite;
-}
-.orbit.two{
-  width:78%;aspect-ratio:1;
-  transform:rotateY(69deg) rotateZ(20deg);
-  border-color:rgba(255,202,97,.3);
-  animation:orbitB 13s linear infinite;
-}
-.orbit.three{
-  width:104%;aspect-ratio:1;
-  border-style:dashed;border-color:rgba(247,185,70,.10);
-  animation:spin 45s linear infinite;
-}
-@keyframes orbitA{
-  50%{transform:rotateX(74deg) rotateZ(152deg)}
-  100%{transform:rotateX(74deg) rotateZ(332deg)}
-}
-@keyframes orbitB{
-  50%{transform:rotateY(69deg) rotateZ(200deg)}
-  100%{transform:rotateY(69deg) rotateZ(380deg)}
-}
+#particles{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.ambient{position:fixed;inset:0;z-index:-3;pointer-events:none;background:radial-gradient(ellipse at 80% 15%,#9c63152a,transparent 38%),radial-gradient(ellipse at 10% 80%,#805b1520,transparent 42%),#08090d}
+.container{width:min(1240px,calc(100% - 44px));margin:auto}
+.gold{color:var(--gold)}
+.gold-gradient{background:linear-gradient(115deg,#ba801f,#f7c55e,#fff0bc,#d69a32,#ffe3a1);background-size:240%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:goldshine 7s linear infinite}
+@keyframes goldshine{to{background-position:240%}}
+.topbar{background:linear-gradient(90deg,#9b6618,#f5c45b,#a46c18);color:#171007;text-align:center;padding:10px;font-size:10px;font-weight:900;letter-spacing:2px}
+header{position:sticky;top:0;z-index:100;background:#090a0de8;backdrop-filter:blur(22px);border-bottom:1px solid var(--line)}
+.nav{height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font:700 27px 'Space Grotesk';letter-spacing:3px}
+.brand img{width:46px;height:46px;object-fit:cover;border-radius:50%;box-shadow:0 0 25px #c9913655}
+.logo-fallback{display:none;width:46px;height:46px;place-items:center;border-radius:50%;border:2px solid var(--gold);color:var(--gold)}
+.navlinks{display:flex;gap:25px;align-items:center}
+.navlinks a{font-size:12px;font-weight:700;color:#a6a9b3;transition:.2s}
+.navlinks a:hover{color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid var(--line);border-radius:11px;padding:14px 22px;background:#1b1d24;color:white;font-size:12px;font-weight:800;transition:.25s}
+.btn:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 10px 30px #0005}
+.btn-gold{background:linear-gradient(110deg,#cb902c,#f8c65e,#ffe8a1,#d99c34);color:#181108;border-color:#f6c766;box-shadow:0 7px 27px #d9992830}
+.btn-outline{background:transparent;border-color:#9c762e}
+.menu-toggle{display:none}
+.mobile-nav{display:none;padding:12px 24px 20px;border-top:1px solid var(--line)}
+.mobile-nav a{display:block;padding:12px 0;color:#ddd;font-size:13px}
+.hero{min-height:730px;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:30px;padding-top:60px;padding-bottom:80px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:100px;padding:11px 16px;color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;background:#d69a2710}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.hero h1{font:700 clamp(48px,6vw,82px)/1.05 'Space Grotesk';letter-spacing:-3.5px;margin:28px 0}
+.hero p{font-size:15px;color:var(--muted);line-height:1.95;max-width:570px}
+.hero-actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
+.hero-proof{display:flex;gap:25px;flex-wrap:wrap;margin-top:40px;padding-top:25px;border-top:1px solid var(--line)}
+.hero-proof div{display:flex;flex-direction:column;gap:7px}
+.hero-proof strong{font-size:17px}
+.hero-proof small{color:var(--muted);font-size:10px;letter-spacing:1px}
+.hero-art{height:590px;position:relative;display:grid;place-items:center;perspective:1100px;isolation:isolate}
+.hero-art:before{content:"";position:absolute;width:85%;aspect-ratio:1;border-radius:50%;background:#c88b2950;filter:blur(95px);z-index:-1}
+.orbit{position:absolute;border:1px solid #efb54b55;border-radius:50%;pointer-events:none}
+.orbit.one{width:95%;aspect-ratio:1;transform:rotateX(74deg) rotateZ(-20deg);animation:orbit1 13s linear infinite;box-shadow:0 0 30px #c98b2830}
+.orbit.two{width:80%;aspect-ratio:1;transform:rotateY(72deg) rotateZ(25deg);animation:orbit2 16s linear infinite}
+.orbit.three{width:105%;aspect-ratio:1;border-style:dashed;border-color:#e7aa3425;animation:spin 45s linear infinite}
+@keyframes orbit1{to{transform:rotateX(74deg) rotateZ(340deg)}}
+@keyframes orbit2{to{transform:rotateY(72deg) rotateZ(385deg)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-.coin-wrap{
-  width:min(84%,475px);
-  aspect-ratio:1;
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-  transform-style:preserve-3d;
-  animation:levitate 6s ease-in-out infinite;
-  will-change:transform;
-}
-@keyframes levitate{
-  0%,100%{translate:0 0}
-  50%{translate:0 -22px}
-}
-.coin-face{
-  width:100%;height:100%;
-  border-radius:50%;
-  position:relative;overflow:hidden;
-  border:3px solid #db9f3d;
-  background:radial-gradient(circle at 35% 25%,#ecc264,#563308 55%,#19140c);
-  box-shadow:
-   0 0 5px #fff1bc,
-   0 0 45px #bd7d205b,
-   inset 0 0 24px #f7cd6a7a,
-   18px 20px 0 -9px #855016,
-   24px 26px 0 -11px #dfa83c,
-   35px 45px 65px #000;
-}
-.coin-face img{
-  width:100%;height:100%;object-fit:cover;
-  display:block;border-radius:50%;
-}
-.coin-face:after{
-  content:"";position:absolute;inset:-80%;
-  background:linear-gradient(110deg,transparent 43%,#fff6c525 49%,#ffffff50 50%,transparent 56%);
-  transform:rotate(25deg);
-  animation:coin-glint 8s ease-in-out infinite;
-}
-@keyframes coin-glint{
-  0%,30%{translate:-65% 0}
-  65%,100%{translate:65% 0}
-}
-.coin-placeholder{
-  display:none;position:absolute;inset:0;
-  place-items:center;text-align:center;
-  border-radius:50%;background:radial-gradient(circle,#4d3011,#080809);
-}
-.coin-placeholder strong{
-  font-family:'Space Grotesk';font-size:clamp(90px,11vw,155px);
-  color:#f3c368;text-shadow:0 4px 15px #efa73391;
-}
-.coin-placeholder span{display:block;font-size:28px;letter-spacing:7px;color:#dfb86b}
-.floating-label{
-  position:absolute;z-index:5;
-  padding:13px 16px;
-  background:rgba(17,18,23,.7);
-  border:1px solid rgba(246,194,86,.27);
-  border-radius:13px;
-  backdrop-filter:blur(20px);
-  box-shadow:0 12px 40px #0005;
-  animation:labelFloat 5s ease-in-out infinite;
-}
-.floating-label small{display:block;color:#a5a5a8;font-size:9px;letter-spacing:1.3px}
-.floating-label strong{display:block;margin-top:6px;font-size:14px;color:#f4c36b}
-.float-a{top:11%;left:0}
-.float-b{bottom:12%;right:-3%;animation-delay:-2s}
+.coin-wrap{width:min(82%,455px);aspect-ratio:1;position:relative;transform-style:preserve-3d;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{translate:0 -20px}}
+.coin{width:100%;height:100%;position:relative;overflow:hidden;border-radius:50%;border:3px solid #e4ac4b;background:radial-gradient(circle at 35% 25%,#f7d77e,#6a430f 65%,#211508);box-shadow:0 0 40px #e9a63455,inset 0 0 25px #ffdc7977,18px 20px 0 -9px #85541c,25px 27px 0 -11px #d9a342,35px 40px 65px #000}
+.coin img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.coin:after{content:"";position:absolute;inset:-80%;background:linear-gradient(110deg,transparent 44%,#ffffff55 50%,transparent 56%);transform:rotate(25deg);animation:glint 8s infinite}
+@keyframes glint{0%,25%{translate:-70% 0}70%,100%{translate:70% 0}}
+.coin-fallback{display:none;position:absolute;inset:0;border-radius:50%;place-items:center;text-align:center;background:radial-gradient(circle,#52310b,#100d09)}
+.coin-fallback strong{font:700 130px 'Space Grotesk';color:var(--gold)}
+.coin-fallback span{display:block;color:var(--gold);font-size:25px;letter-spacing:6px}
+.float-label{position:absolute;z-index:5;background:#121318c9;border:1px solid #e2aa4855;backdrop-filter:blur(15px);border-radius:13px;padding:13px 17px;box-shadow:0 15px 40px #0006;animation:labelFloat 5s ease-in-out infinite}
+.float-label small{display:block;font-size:9px;letter-spacing:1px;color:var(--muted)}
+.float-label strong{display:block;font-size:13px;color:var(--gold);margin-top:6px}
+.float-a{top:12%;left:0}.float-b{bottom:12%;right:0;animation-delay:-2s}
 @keyframes labelFloat{50%{transform:translateY(-13px)}}
-.section{padding:92px 0}
-.section-heading{text-align:center;margin-bottom:45px}
-.tag{font-size:11px;color:var(--gold);letter-spacing:3px;font-weight:800}
-.section-heading h2{
-  font-family:'Space Grotesk';font-size:clamp(31px,4vw,49px);
-  margin:14px 0;letter-spacing:-1.5px;
-}
-.section-heading p{color:var(--muted);font-size:14px;line-height:1.8}
+.section{padding:90px 0}
+.section-head{text-align:center;margin-bottom:45px}
+.tag{color:var(--gold);font-size:11px;letter-spacing:3px;font-weight:900}
+.section-head h2{font:700 clamp(31px,4vw,48px) 'Space Grotesk';letter-spacing:-1.5px;margin:15px 0}
+.section-head p{color:var(--muted);font-size:14px;line-height:1.8;max-width:690px;margin:auto}
 .grid{display:grid;gap:19px}
 .grid4{grid-template-columns:repeat(4,1fr)}
 .grid3{grid-template-columns:repeat(3,1fr)}
 .grid2{grid-template-columns:repeat(2,1fr)}
-.glass{
-  position:relative;overflow:hidden;
-  background:linear-gradient(138deg,rgba(33,34,39,.9),rgba(13,14,19,.94));
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:27px;
-  box-shadow:inset 0 1px rgba(255,255,255,.035),0 15px 45px #0002;
-  transition:border-color .3s,transform .3s;
-}
-.glass:hover{border-color:rgba(252,192,73,.4)}
-.tilt-card{transform-style:preserve-3d;will-change:transform}
-.stat-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px}
-.stat-value{
-  font-family:'Space Grotesk';font-size:27px;
-  font-weight:700;letter-spacing:-1px;
-  margin-top:17px;overflow-wrap:anywhere;
-}
-.stat-foot{font-size:11px;color:#bba066;margin-top:11px;line-height:1.6}
-.divider{height:1px;background:var(--line);margin:20px 0}
-.feature-icon{
-  display:grid;place-items:center;
-  width:51px;height:51px;
-  color:var(--gold);font-size:26px;
-  border:1px solid rgba(249,189,67,.22);
-  background:linear-gradient(135deg,#e9a62b23,transparent);
-  border-radius:15px;
-}
-.glass h3{font-size:19px;margin:22px 0 12px}
-.glass p{font-size:13px;color:var(--muted);line-height:1.9}
-.market-layout{display:grid;grid-template-columns:1.6fr .9fr;gap:20px}
-.chart-view{height:380px;position:relative;overflow:hidden;border-radius:12px}
-.chart-view iframe{width:100%;height:100%;border:0;background:#101116}
-.market-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
-.detail-row{
- display:flex;justify-content:space-between;
- gap:16px;padding:16px 0;
- border-bottom:1px solid var(--line);
- font-size:12px;
-}
-.detail-row span:first-child{color:var(--muted)}
-.detail-row strong{text-align:right;overflow-wrap:anywhere}
-.market-note{font-size:11px;color:var(--muted);line-height:1.8}
-.token-visual{
- position:relative;min-height:370px;display:grid;place-items:center;
-}
-.token-ring{
- position:absolute;width:300px;height:300px;border-radius:50%;
- border:20px solid #d49c2922;
- border-top-color:#fac65a;
- box-shadow:0 0 65px #bd86272b;
- animation:spin 15s linear infinite;
-}
-.token-center{text-align:center;position:relative}
-.token-center img{width:155px;height:155px;border-radius:50%;object-fit:cover}
-.token-center strong{display:block;font-size:26px;margin-top:14px;color:var(--gold)}
-.token-center small{display:block;color:var(--muted);margin-top:8px}
-.contract-address{
- padding:18px;border:1px solid var(--line);
- background:#090a0e;border-radius:12px;
- font-family:monospace;color:#f3c978;
- line-height:1.9;overflow-wrap:anywhere;
- font-size:12px;
-}
-.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:17px}
-.road-card{border-top:2px solid #cd952d}
-.road-card small{color:var(--gold);font-size:11px;letter-spacing:2px}
-.road-card ul{padding-left:18px;color:var(--muted);line-height:2;font-size:12px}
-.status-pill{
- display:inline-flex;gap:8px;align-items:center;
- border:1px solid var(--line);border-radius:30px;
- padding:8px 12px;color:var(--gold);font-size:10px;
-}
+.card{position:relative;background:linear-gradient(140deg,#1a1c23ed,#0e1015f2);border:1px solid var(--line);border-radius:20px;padding:27px;box-shadow:inset 0 1px #ffffff09,0 15px 40px #0002;transition:border-color .3s,transform .3s}
+.card:hover{border-color:#f2b84e65}
+.card h3{font-size:19px;margin:20px 0 12px}
+.card p{color:var(--muted);font-size:13px;line-height:1.9}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.stat-value{font:700 27px 'Space Grotesk';margin-top:16px;overflow-wrap:anywhere}
+.stat-foot{font-size:11px;color:#c8a66a;margin-top:11px;line-height:1.6}
+.feature-icon{width:53px;height:53px;display:grid;place-items:center;border:1px solid #e9ae4538;background:#e9ae4510;border-radius:14px;color:var(--gold);font-size:25px}
+.feature-link{display:inline-block;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:1px;margin-top:14px}
+.market-layout{display:grid;grid-template-columns:1.55fr .9fr;gap:20px}
+.chart-container{height:395px;overflow:hidden;border-radius:12px;background:#0d0e12}
+.chart-container iframe{width:100%;height:100%;border:0}
+.chart-empty{height:100%;display:grid;place-items:center;text-align:center;padding:25px}
+.chart-empty h3{margin:12px 0}
+.chart-empty p{color:var(--muted);font-size:13px;line-height:1.8}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);font-size:12px}
+.row span{color:var(--muted)}
+.row strong{text-align:right;overflow-wrap:anywhere}
+.contract-box{padding:18px;border:1px solid var(--line);background:#090a0f;border-radius:12px;color:var(--gold2);font-family:monospace;font-size:12px;line-height:1.8;overflow-wrap:anywhere}
+.token-showcase{min-height:330px;display:grid;place-items:center;position:relative}
+.token-ring{position:absolute;width:285px;height:285px;border:18px solid #c9902725;border-top-color:var(--gold);border-radius:50%;animation:spin 16s linear infinite;box-shadow:0 0 50px #d5952528}
+.token-showcase img{width:165px;height:165px;object-fit:cover;border-radius:50%;position:relative;box-shadow:0 0 45px #c78b2945}
+.token-showcase strong{display:block;text-align:center;margin-top:20px;font-size:24px;color:var(--gold)}
+.token-showcase small{display:block;text-align:center;color:var(--muted);margin-top:8px}
+.steps{counter-reset:step}
+.step{display:flex;gap:20px;align-items:flex-start;padding:23px 0;border-bottom:1px solid var(--line)}
+.step-number{width:43px;height:43px;flex-shrink:0;display:grid;place-items:center;border:1px solid #d69d3e70;border-radius:12px;color:var(--gold);font-weight:900}
+.step h3{margin:0 0 8px;font-size:16px}
+.step p{margin:0}
+.roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.road-card{border-top:3px solid var(--gold)}
+.road-card small{color:var(--gold);letter-spacing:2px;font-size:10px}
+.road-card ul{padding-left:17px;color:var(--muted);font-size:12px;line-height:2.2}
+.security-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.faq{max-width:850px;margin:auto}
+.faq-item{border:1px solid var(--line);border-radius:13px;background:#15171c;margin-bottom:12px;overflow:hidden}
+.faq-item summary{padding:20px 22px;cursor:pointer;font-size:14px;font-weight:800;list-style:none;display:flex;justify-content:space-between;gap:15px}
+.faq-item summary:after{content:"+";color:var(--gold);font-size:21px}
+.faq-item[open] summary:after{content:"−"}
+.faq-item p{margin:0;padding:0 22px 22px;color:var(--muted);font-size:13px;line-height:1.9}
 .wallet-panel{max-width:850px;margin:auto}
-.cta{
- position:relative;text-align:center;
- border-radius:27px;overflow:hidden;padding:75px 25px;
- border:1px solid #996e29;
- background:
- radial-gradient(circle at center,rgba(177,109,13,.23),transparent 60%),
- linear-gradient(130deg,#201a10,#0d0e11);
-}
-.cta h2{font-family:'Space Grotesk';font-size:clamp(31px,5vw,54px);margin:20px 0}
-.cta p{max-width:650px;margin:0 auto 30px;color:#b7a994;line-height:1.9}
+.cta{text-align:center;padding:75px 25px;border-radius:25px;border:1px solid #b78334;background:radial-gradient(circle at center,#b37b2030,transparent 60%),linear-gradient(135deg,#201a10,#0c0d11)}
+.cta h2{font:700 clamp(33px,5vw,55px) 'Space Grotesk';margin:20px 0}
+.cta p{max-width:650px;margin:0 auto 28px;color:#b8ac97;line-height:1.9;font-size:14px}
 footer{border-top:1px solid var(--line);padding:45px 0;color:var(--muted);font-size:12px}
-.footer-flex{display:flex;gap:20px;justify-content:space-between;align-items:center;flex-wrap:wrap}
-.toast{
- display:none;position:fixed;bottom:22px;right:22px;
- max-width:390px;z-index:9999;
- background:#191a20;border:1px solid var(--gold);
- border-radius:13px;padding:17px;color:#fff;
- box-shadow:0 15px 50px #0009;font-size:13px;line-height:1.6;
-}
-.reveal{opacity:0;transform:translateY(32px);transition:opacity .8s,transform .8s}
+.footer-flex{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.toast{display:none;position:fixed;bottom:20px;right:20px;z-index:999;background:#1b1d23;border:1px solid var(--gold);border-radius:12px;padding:17px 20px;max-width:390px;font-size:13px;line-height:1.6;box-shadow:0 15px 45px #0008}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
 .reveal.visible{opacity:1;transform:translateY(0)}
 @media(max-width:1050px){
- nav{display:none}
- .menu-btn{display:inline-flex}
- .hero{grid-template-columns:1fr;text-align:center;padding-top:60px}
- .hero-description{margin:auto}
- .hero-actions,.hero-proof{justify-content:center}
- .hero-art{order:-1;min-height:480px;max-width:600px;margin:auto}
- .coin-wrap{width:min(70%,390px)}
- .grid4{grid-template-columns:repeat(2,1fr)}
- .market-layout{grid-template-columns:1fr}
- .roadmap{grid-template-columns:repeat(2,1fr)}
+.navlinks{display:none}.menu-toggle{display:inline-flex}
+.hero{grid-template-columns:1fr;text-align:center}
+.hero p{margin-left:auto;margin-right:auto}
+.hero-actions,.hero-proof{justify-content:center}
+.hero-art{order:-1;height:490px;max-width:600px;margin:auto;width:100%}
+.coin-wrap{width:min(75%,390px)}
+.grid4{grid-template-columns:repeat(2,1fr)}
+.market-layout{grid-template-columns:1fr}
+.roadmap{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:650px){
- .container{padding:0 17px}
- .topbar{font-size:8px;letter-spacing:1px}
- .nav{min-height:70px}
- .brand{font-size:21px}
- .brand img,.brand-fallback{width:36px;height:36px}
- .nav .btn-gold{padding:11px 13px;font-size:10px}
- .hero{min-height:auto;padding-top:35px;padding-bottom:45px}
- .hero-art{min-height:340px}
- .coin-wrap{width:73%}
- .orbit.one{width:90%}
- .orbit.two{width:77%}
- .float-a{left:0;top:3%}
- .float-b{right:0;bottom:3%}
- .floating-label{padding:9px 10px}
- .floating-label strong{font-size:11px}
- .floating-label small{font-size:8px}
- .hero h1{font-size:clamp(43px,10vw,63px);letter-spacing:-2px}
- .hero-description{font-size:13px}
- .hero-proof{gap:12px}
- .proof-block strong{font-size:13px}
- .proof-block span{font-size:9px}
- .section{padding:58px 0}
- .grid4,.grid3,.grid2,.roadmap{grid-template-columns:1fr}
- .glass{padding:21px}
- .chart-view{height:320px}
- .token-ring{width:250px;height:250px}
+.container{width:calc(100% - 34px)}
+.topbar{font-size:8px;letter-spacing:1px}
+.nav{height:70px}
+.brand{font-size:21px}
+.brand img,.logo-fallback{width:37px;height:37px}
+.nav .btn-gold{padding:11px 12px;font-size:10px}
+.hero{min-height:auto;padding-top:25px;padding-bottom:45px}
+.hero-art{height:350px}
+.coin-wrap{width:72%}
+.float-label{padding:9px 11px}
+.float-label small{font-size:8px}
+.float-label strong{font-size:10px}
+.float-a{top:3%}.float-b{bottom:3%}
+.hero h1{font-size:clamp(42px,10vw,60px);letter-spacing:-2px}
+.hero p{font-size:13px}
+.hero-proof strong{font-size:13px}
+.hero-proof small{font-size:9px}
+.section{padding:60px 0}
+.grid4,.grid3,.grid2,.roadmap,.security-grid{grid-template-columns:1fr}
+.card{padding:21px}
+.chart-container{height:320px}
+.token-ring{width:245px;height:245px}
+.cta{padding:55px 20px}
 }
 @media(prefers-reduced-motion:reduce){
- *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
- .reveal{opacity:1;transform:none}
+*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+.reveal{opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
-<div class="background-glow"></div>
-<canvas id="space"></canvas>
+<div class="ambient"></div>
+<canvas id="particles"></canvas>
 
-<div class="topbar">✦ ZRON — THE GOLDEN DIMENSION OF WEB3 ✦</div>
+<div class="topbar">✦ ZRON — ENTER THE GOLDEN DIMENSION OF WEB3 ✦</div>
 
 <header>
- <div class="container nav">
-  <a href="#home" class="brand">
-   <img src="https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png" alt="ZRON" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-   <span class="brand-fallback">Z</span>
-   ZRON
-  </a>
-  <nav>
-   <a href="#home">Home</a>
-   <a href="#market">Markets</a>
-   <a href="#ecosystem">Ecosystem</a>
-   <a href="#tokenomics">Tokenomics</a>
-   <a href="#roadmap">Roadmap</a>
-   <a href="#wallet">Wallet</a>
-  </nav>
-  <div style="display:flex;align-items:center;gap:10px">
-   <button class="btn btn-gold" id="headerWallet" onclick="connectWallet()">Connect Wallet</button>
-   <button class="btn menu-btn" onclick="toggleMenu()">☰</button>
-  </div>
- </div>
- <div id="mobileNav">
-  <a href="#home" onclick="toggleMenu()">Home</a>
-  <a href="#market" onclick="toggleMenu()">Markets</a>
-  <a href="#ecosystem" onclick="toggleMenu()">Ecosystem</a>
-  <a href="#tokenomics" onclick="toggleMenu()">Tokenomics</a>
-  <a href="#roadmap" onclick="toggleMenu()">Roadmap</a>
-  <a href="#wallet" onclick="toggleMenu()">Wallet</a>
- </div>
+<div class="container nav">
+<a class="brand" href="#home">
+<img src="https://raw.githubusercontent.com/axionteam645/ZRON/main/ZRON.png" alt="ZRON Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+<span class="logo-fallback">Z</span>ZRON
+</a>
+<div class="navlinks">
+<a href="#home">Home</a>
+<a href="#market">Markets</a>
+<a href="#ecosystem">Ecosystem</a>
+<a href="#tokenomics">Tokenomics</a>
+<a href="#roadmap">Roadmap</a>
+<a href="#faq">FAQ</a>
+</div>
+<div style="display:flex;gap:9px">
+<button class="btn btn-gold" id="connectTop" onclick="connectWallet()">Connect Wallet</button>
+<button class="btn menu-toggle" onclick="toggleMenu()">☰</button>
+</div>
+</div>
+<div class="mobile-nav" id="mobileNav">
+<a href="#home" onclick="toggleMenu()">Home</a>
+<a href="#market" onclick="toggleMenu()">Markets</a>
+<a href="#ecosystem" onclick="toggleMenu()">Ecosystem</a>
+<a href="#tokenomics" onclick="toggleMenu()">Tokenomics</a>
+<a href="#roadmap" onclick="toggleMenu()">Roadmap</a>
+<a href="#faq" onclick="toggleMenu()">FAQ</a>
+<a href="#wallet" onclick="toggleMenu()">Wallet</a>
+</div>
 </header>
 
 <main>
-<section id="home" class="container hero">
- <div class="reveal">
-  <div class="eyebrow"><span class="signal"></span> THE NEXT DIMENSION OF DIGITAL FINANCE</div>
-  <h1>THE FUTURE<br>IS <span class="gold-text">GOLDEN.</span><br>THE FUTURE<br>IS ZRON.</h1>
-  <p class="hero-description">
-   Enter a new dimension of Web3. ZRON combines a distinctive
-   digital identity with direct access to blockchain technology,
-   decentralized markets, and the power of BNB Smart Chain.
-  </p>
-  <div class="hero-actions">
-   <a class="btn btn-gold" id="heroTrade" href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1" target="_blank" rel="noopener noreferrer">Trade ZRON ↗</a>
-   <a href="#ecosystem" class="btn btn-outline">Explore Ecosystem →</a>
-   <button class="btn" onclick="addToken()">⊕ Add to Wallet</button>
-  </div>
-  <div class="hero-proof">
-   <div class="proof-block"><strong>1,000,000,000</strong><span>DECLARED TOTAL SUPPLY</span></div>
-   <div class="proof-divider"></div>
-   <div class="proof-block"><strong>BNB CHAIN</strong><span>BLOCKCHAIN NETWORK</span></div>
-   <div class="proof-divider"></div>
-   <div class="proof-block"><strong>BEP-20</strong><span>TOKEN STANDARD</span></div>
-  </div>
- </div>
- <div class="hero-art" id="heroArt">
-  <div class="orbit one"></div>
-  <div class="orbit two"></div>
-  <div class="orbit three"></div>
-  <div class="coin-wrap" id="coin3d">
-   <div class="coin-face">
-    <img src="https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png" alt="ZRON Gold Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-    <div class="coin-placeholder"><div><strong>Z</strong><span>ZRON</span></div></div>
-   </div>
-  </div>
-  <div class="floating-label float-a">
-   <small>NETWORK</small><strong>◉ BNB SMART CHAIN</strong>
-  </div>
-  <div class="floating-label float-b">
-   <small>DIGITAL ASSET</small><strong>✦ ZRON TOKEN</strong>
-  </div>
- </div>
+<section class="container hero" id="home">
+<div class="reveal">
+<div class="eyebrow"><span class="live-dot"></span> THE NEXT DIMENSION OF DIGITAL ASSETS</div>
+<h1>BEYOND<br>THE ORDINARY.<br><span class="gold-gradient">BEYOND WEB3.</span></h1>
+<p>ZRON represents a bold digital identity for the decentralized era. Built on BNB Smart Chain, ZRON brings together blockchain accessibility, transparent on-chain infrastructure, and a premium Web3 experience designed for a borderless digital future.</p>
+<p>Explore real-time markets, connect your wallet, discover decentralized trading, and become part of the evolving ZRON journey.</p>
+<div class="hero-actions">
+<a class="btn btn-gold" id="heroSwap" target="_blank" rel="noopener noreferrer">Trade ZRON ↗</a>
+<a class="btn btn-outline" href="#ecosystem">Explore Ecosystem →</a>
+<button class="btn" onclick="addToken()">+ Add to Wallet</button>
+</div>
+<div class="hero-proof">
+<div><strong>1 BILLION</strong><small>DECLARED TOTAL SUPPLY</small></div>
+<div><strong>BNB CHAIN</strong><small>BLOCKCHAIN NETWORK</small></div>
+<div><strong>BEP-20</strong><small>TOKEN STANDARD</small></div>
+</div>
+</div>
+<div class="hero-art" id="heroArt">
+<div class="orbit one"></div><div class="orbit two"></div><div class="orbit three"></div>
+<div class="coin-wrap" id="coin3d">
+<div class="coin">
+<img src="https://raw.githubusercontent.com/axionteam645/ZRON/main/ZRON.png" alt="ZRON 3D Gold Coin" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+<div class="coin-fallback"><div><strong>Z</strong><span>ZRON</span></div></div>
+</div>
+</div>
+<div class="float-label float-a"><small>POWERED BY</small><strong>◉ BNB SMART CHAIN</strong></div>
+<div class="float-label float-b"><small>DIGITAL ASSET</small><strong>✦ ZRON TOKEN</strong></div>
+</div>
 </section>
 
 <section class="container reveal">
- <div class="grid grid4">
-  <div class="glass tilt-card">
-   <div class="stat-label">Live ZRON Price</div>
-   <div class="stat-value" id="price">$—</div>
-   <div class="stat-foot" id="priceChange">Awaiting market data</div>
-  </div>
-  <div class="glass tilt-card">
-   <div class="stat-label">24H Trading Volume</div>
-   <div class="stat-value" id="volume">—</div>
-   <div class="stat-foot">DEX market activity</div>
-  </div>
-  <div class="glass tilt-card">
-   <div class="stat-label">Liquidity</div>
-   <div class="stat-value" id="liquidity">—</div>
-   <div class="stat-foot">Highest-liquidity indexed pool</div>
-  </div>
-  <div class="glass tilt-card">
-   <div class="stat-label">Market Capitalization</div>
-   <div class="stat-value" id="marketcap">—</div>
-   <div class="stat-foot">Provider-reported data, if available</div>
-  </div>
- </div>
+<div class="grid grid4">
+<div class="card"><div class="stat-label">Live ZRON Price</div><div class="stat-value" id="price">—</div><div class="stat-foot" id="priceChange">Awaiting market data</div></div>
+<div class="card"><div class="stat-label">24H Trading Volume</div><div class="stat-value" id="volume">—</div><div class="stat-foot">Decentralized market activity</div></div>
+<div class="card"><div class="stat-label">Liquidity</div><div class="stat-value" id="liquidity">—</div><div class="stat-foot">Highest-liquidity indexed pool</div></div>
+<div class="card"><div class="stat-label">Market Capitalization</div><div class="stat-value" id="marketcap">—</div><div class="stat-foot">Market provider estimate</div></div>
+</div>
 </section>
 
-<section id="market" class="section">
- <div class="container">
-  <div class="section-heading reveal">
-   <div class="tag">THE ZRON MARKET TERMINAL</div>
-   <h2>Intelligence Meets <span class="gold-text">Precision.</span></h2>
-   <p>Real market information from supported decentralized liquidity pools.</p>
-  </div>
-  <div class="market-layout">
-   <div class="glass reveal">
-    <div class="market-top">
-     <div>
-      <div class="tag">LIVE CHART</div>
-      <h3 style="margin:10px 0">ZRON / USD</h3>
-     </div>
-     <span class="status-pill"><span class="signal"></span> MARKET FEED</span>
-    </div>
-    <div class="divider"></div>
-    <div class="chart-view" id="chartContainer">
-     <div id="chartFallback" style="height:100%;display:grid;place-items:center;text-align:center;padding:22px">
-      <div>
-       <div style="font-size:48px;color:var(--gold)">⌁</div>
-       <h3>Market Chart</h3>
-       <p id="chartMessage">Searching for a supported ZRON liquidity pool...</p>
-       <a id="chartExternal" class="btn btn-outline" href="https://dexscreener.com/bsc" target="_blank" rel="noopener">Open DexScreener ↗</a>
-      </div>
-     </div>
-    </div>
-    <p class="market-note">Live charts are supplied by DexScreener where an indexed trading pool exists.</p>
-   </div>
-   <div class="glass reveal">
-    <div class="tag">MARKET OVERVIEW</div>
-    <h3>Trading Analytics</h3>
-    <div class="detail-row"><span>24H Change</span><strong id="change24">—</strong></div>
-    <div class="detail-row"><span>24H Buys</span><strong id="buys">—</strong></div>
-    <div class="detail-row"><span>24H Sells</span><strong id="sells">—</strong></div>
-    <div class="detail-row"><span>Fully Diluted Value</span><strong id="fdv">—</strong></div>
-    <div class="detail-row"><span>DEX</span><strong id="dexName">—</strong></div>
-    <div class="detail-row"><span>Trading Pair</span><strong id="pairName">—</strong></div>
-    <div class="detail-row"><span>Pool Address</span><strong id="poolAddress">—</strong></div>
-    <div class="detail-row"><span>Data Status</span><strong id="dataStatus">Loading...</strong></div>
-    <div style="margin-top:25px">
-     <button class="btn btn-gold" style="width:100%" onclick="loadMarket()">↻ Refresh Market Data</button>
-    </div>
-   </div>
-  </div>
- </div>
+<section class="section" id="market">
+<div class="container">
+<div class="section-head reveal"><div class="tag">ZRON MARKET INTELLIGENCE</div><h2>Real-Time <span class="gold-gradient">Market Insights.</span></h2><p>Explore available decentralized market data, trading activity, liquidity, and price movements from indexed ZRON liquidity pools.</p></div>
+<div class="market-layout">
+<div class="card reveal">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap">
+<div><div class="tag">LIVE TRADING CHART</div><h3>ZRON / USD</h3></div>
+<span style="color:var(--gold);font-size:11px">◉ BNB SMART CHAIN</span>
+</div>
+<div class="chart-container" id="chartContainer">
+<div class="chart-empty">
+<div><div style="font-size:48px;color:var(--gold)">⌁</div><h3>Market Chart</h3><p id="chartMessage">Searching for a supported ZRON trading pool...</p><a id="chartExternal" class="btn btn-outline" href="https://dexscreener.com/bsc" target="_blank" rel="noopener">Open DexScreener ↗</a></div>
+</div>
+</div>
+<p>Chart data is provided by DexScreener where supported liquidity pools exist. Displayed values are informational and may be delayed.</p>
+</div>
+<div class="card reveal">
+<div class="tag">TRADING ANALYTICS</div><h3>Market Overview</h3>
+<div class="row"><span>24H Price Change</span><strong id="change24">—</strong></div>
+<div class="row"><span>24H Buys</span><strong id="buys">—</strong></div>
+<div class="row"><span>24H Sells</span><strong id="sells">—</strong></div>
+<div class="row"><span>Fully Diluted Value</span><strong id="fdv">—</strong></div>
+<div class="row"><span>Exchange</span><strong id="dexName">—</strong></div>
+<div class="row"><span>Trading Pair</span><strong id="pairName">—</strong></div>
+<div class="row"><span>Pool</span><strong id="poolAddress">—</strong></div>
+<div class="row"><span>Data Status</span><strong id="dataStatus">Loading...</strong></div>
+<button class="btn btn-gold" style="width:100%;margin-top:25px" onclick="loadMarket()">↻ Refresh Market Data</button>
+</div>
+</div>
+</div>
 </section>
 
-<section id="ecosystem" class="section">
- <div class="container">
-  <div class="section-heading reveal">
-   <div class="tag">THE ZRON EXPERIENCE</div>
-   <h2>Explore the <span class="gold-text">Ecosystem.</span></h2>
-   <p>Your gateway to decentralized assets, markets, and blockchain tools.</p>
-  </div>
-  <div class="grid grid3">
-   <div class="glass tilt-card reveal">
-    <div class="feature-icon">⬡</div>
-    <h3>Decentralized Trading</h3>
-    <p>Access supported ZRON liquidity markets through decentralized exchange infrastructure.</p>
-    <a id="ecosystemTrade" href="https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1" target="_blank" rel="noopener" style="color:var(--gold);font-size:12px;font-weight:800">EXPLORE TRADING ↗</a>
-   </div>
-   <div class="glass tilt-card reveal">
-    <div class="feature-icon">◈</div>
-    <h3>Web3 Wallet Access</h3>
-    <p>Connect compatible wallets, inspect on-chain balances, and add ZRON directly to your wallet interface.</p>
-    <a href="#wallet" style="color:var(--gold);font-size:12px;font-weight:800">CONNECT WALLET ↗</a>
-   </div>
-   <div class="glass tilt-card reveal">
-    <div class="feature-icon">⌘</div>
-    <h3>Blockchain Transparency</h3>
-    <p>Review publicly accessible token contract information, transfers and transaction history.</p>
-    <a id="explorerFeature" href="#" target="_blank" rel="noopener" style="color:var(--gold);font-size:12px;font-weight:800">VIEW EXPLORER ↗</a>
-   </div>
-  </div>
- </div>
+<section class="section" id="ecosystem">
+<div class="container">
+<div class="section-head reveal"><div class="tag">DISCOVER THE ZRON EXPERIENCE</div><h2>One Token. <span class="gold-gradient">A World of Possibilities.</span></h2><p>Discover blockchain tools and decentralized experiences available to ZRON users, alongside the project's longer-term vision.</p></div>
+<div class="grid grid3">
+<div class="card reveal"><div class="feature-icon">⬡</div><h3>Decentralized Trading</h3><p>Access permissionless markets through compatible decentralized exchange infrastructure. Trade directly from your wallet while retaining control over transaction approvals.</p><a class="feature-link" id="ecosystemSwap" target="_blank" rel="noopener">EXPLORE TRADING ↗</a></div>
+<div class="card reveal"><div class="feature-icon">◈</div><h3>Web3 Wallet Integration</h3><p>Connect a supported EVM wallet, inspect on-chain balances, switch to BNB Smart Chain, and add ZRON to your wallet with a simple interaction.</p><a class="feature-link" href="#wallet">CONNECT WALLET ↗</a></div>
+<div class="card reveal"><div class="feature-icon">⌘</div><h3>Blockchain Transparency</h3><p>Explore public blockchain records, contract information, token transfers, and wallet activity through independent blockchain explorers.</p><a class="feature-link" id="ecosystemExplorer" target="_blank" rel="noopener">VIEW BLOCKCHAIN ↗</a></div>
+<div class="card reveal"><div class="feature-icon">✧</div><h3>Community-Driven Vision</h3><p>ZRON aims to develop an engaged global community around blockchain participation, transparent communication, and a recognizable digital identity.</p><span class="feature-link">PROJECT VISION</span></div>
+<div class="card reveal"><div class="feature-icon">◉</div><h3>Accessible Blockchain</h3><p>BNB Smart Chain provides an EVM-compatible environment for token transfers, decentralized applications, and smart-contract interactions.</p><span class="feature-link">BNB SMART CHAIN</span></div>
+<div class="card reveal"><div class="feature-icon">◇</div><h3>Future Utility Exploration</h3><p>Potential ecosystem development areas include enhanced analytics, community tools, additional integrations, and utility-focused Web3 experiences.</p><span class="feature-link">FUTURE DEVELOPMENT</span></div>
+</div>
+</div>
 </section>
 
-<section id="tokenomics" class="section">
- <div class="container">
-  <div class="section-heading reveal">
-   <div class="tag">THE ASSET</div>
-   <h2>ZRON <span class="gold-text">Tokenomics.</span></h2>
-   <p>Transparent token fundamentals and direct access to contract details.</p>
-  </div>
-  <div class="grid grid2">
-   <div class="glass reveal">
-    <div class="tag">TOKEN PROFILE</div>
-    <h3>ZRON Digital Asset</h3>
-    <div class="detail-row"><span>Token Name</span><strong>ZRON</strong></div>
-    <div class="detail-row"><span>Symbol</span><strong>ZRON</strong></div>
-    <div class="detail-row"><span>Network</span><strong>BNB Smart Chain</strong></div>
-    <div class="detail-row"><span>Declared Total Supply</span><strong>1,000,000,000 ZRON</strong></div>
-    <div class="detail-row"><span>Circulating Supply</span><strong>To Be Announced</strong></div>
-    <div class="detail-row"><span>On-Chain Total Supply</span><strong id="onchainSupply">Checking...</strong></div>
-    <div class="detail-row"><span>Token Decimals</span><strong id="decimals">Checking...</strong></div>
-    <div class="detail-row"><span>Contract Standard</span><strong>BEP-20</strong></div>
-   </div>
-   <div class="glass reveal">
-    <div class="token-visual">
-     <div class="token-ring"></div>
-     <div class="token-center">
-      <img src="https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png" alt="ZRON" onerror="this.style.display='none'">
-      <strong>1 BILLION</strong>
-      <small>DECLARED TOTAL ZRON SUPPLY</small>
-     </div>
-    </div>
-    <div class="divider"></div>
-    <div class="tag">CONTRACT ADDRESS</div>
-    <div class="contract-address" id="contractAddress"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
-     <button class="btn btn-gold" onclick="copyContract()">Copy Address</button>
-     <a id="explorerContract" href="#" target="_blank" rel="noopener" class="btn btn-outline">BscScan ↗</a>
-    </div>
-   </div>
-  </div>
- </div>
+<section class="section" id="tokenomics">
+<div class="container">
+<div class="section-head reveal"><div class="tag">TOKEN FUNDAMENTALS</div><h2>Understand <span class="gold-gradient">ZRON Tokenomics.</span></h2><p>Explore the declared token supply, blockchain details, and independently verifiable contract information.</p></div>
+<div class="grid grid2">
+<div class="card reveal">
+<div class="tag">TOKEN INFORMATION</div><h3>ZRON Asset Profile</h3>
+<div class="row"><span>Token Name</span><strong>ZRON</strong></div>
+<div class="row"><span>Symbol</span><strong>ZRON</strong></div>
+<div class="row"><span>Blockchain</span><strong>BNB Smart Chain</strong></div>
+<div class="row"><span>Token Standard</span><strong>BEP-20</strong></div>
+<div class="row"><span>Declared Total Supply</span><strong>1,000,000,000 ZRON</strong></div>
+<div class="row"><span>Circulating Supply</span><strong>To Be Announced</strong></div>
+<div class="row"><span>On-Chain Supply</span><strong id="onchainSupply">Checking...</strong></div>
+<div class="row"><span>Decimals</span><strong id="decimals">Checking...</strong></div>
+<div class="row"><span>Network Chain ID</span><strong>56</strong></div>
+</div>
+<div class="card reveal">
+<div class="token-showcase">
+<div class="token-ring"></div>
+<div style="position:relative;text-align:center">
+<img src="https://raw.githubusercontent.com/axionteam645/ZRON/main/ZRON.png" alt="ZRON Token Logo" onerror="this.style.display='none'">
+<strong>1,000,000,000</strong><small>DECLARED TOTAL ZRON SUPPLY</small>
+</div>
+</div>
+<div class="tag" style="margin-bottom:13px">OFFICIAL CONTRACT ADDRESS</div>
+<div class="contract-box" id="contractAddress"></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+<button class="btn btn-gold" onclick="copyContract()">Copy Address</button>
+<a class="btn btn-outline" id="contractExplorer" target="_blank" rel="noopener">View on BscScan ↗</a>
+<button class="btn" onclick="addToken()">Add ZRON</button>
+</div>
+</div>
+</div>
+</div>
 </section>
 
-<section id="roadmap" class="section">
- <div class="container">
-  <div class="section-heading reveal">
-   <div class="tag">PROJECT VISION</div>
-   <h2>A Vision Without <span class="gold-text">Limits.</span></h2>
-   <p>Illustrative development priorities. Official milestones and dates have not been finalized.</p>
-  </div>
-  <div class="roadmap">
-   <div class="glass road-card reveal">
-    <small>PHASE I</small><h3>Foundation</h3>
-    <ul>
-     <li>Token identity</li>
-     <li>Web3 website</li>
-     <li>Blockchain integration</li>
-     <li>Community foundations</li>
-    </ul>
-   </div>
-   <div class="glass road-card reveal">
-    <small>PHASE II</small><h3>Market Access</h3>
-    <ul>
-     <li>Liquidity planning</li>
-     <li>DEX integrations</li>
-     <li>Market analytics</li>
-     <li>Wallet accessibility</li>
-    </ul>
-   </div>
-   <div class="glass road-card reveal">
-    <small>PHASE III</small><h3>Expansion</h3>
-    <ul>
-     <li>Community initiatives</li>
-     <li>Partnership exploration</li>
-     <li>Additional market tools</li>
-     <li>Infrastructure improvements</li>
-    </ul>
-   </div>
-   <div class="glass road-card reveal">
-    <small>PHASE IV</small><h3>Long-Term Vision</h3>
-    <ul>
-     <li>New utility research</li>
-     <li>Advanced integrations</li>
-     <li>Scalable architecture</li>
-     <li>Ecosystem development</li>
-    </ul>
-   </div>
-  </div>
- </div>
+<section class="section" id="how-to-buy">
+<div class="container">
+<div class="section-head reveal"><div class="tag">GET STARTED WITH ZRON</div><h2>Your Journey <span class="gold-gradient">Starts Here.</span></h2><p>Follow these steps to access ZRON through supported decentralized trading infrastructure.</p></div>
+<div class="grid grid2">
+<div class="card reveal">
+<div class="step"><div class="step-number">01</div><div><h3>Set Up a Web3 Wallet</h3><p>Install MetaMask or another EVM-compatible wallet. Securely back up your recovery phrase offline and never share it with anyone.</p></div></div>
+<div class="step"><div class="step-number">02</div><div><h3>Connect to BNB Smart Chain</h3><p>Switch your wallet to BNB Smart Chain. Keep a small BNB balance available for blockchain transaction fees.</p></div></div>
+<div class="step"><div class="step-number">03</div><div><h3>Verify the ZRON Contract</h3><p>Compare the token contract address against the project's published information and inspect the contract on BscScan.</p></div></div>
+<div class="step"><div class="step-number">04</div><div><h3>Explore Decentralized Markets</h3><p>Open PancakeSwap, check whether a supported ZRON pool has liquidity, review the transaction details, and confirm only if you accept the risks.</p></div></div>
+</div>
+<div class="card reveal" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+<img src="https://raw.githubusercontent.com/axionteam645/ZRON/main/ZRON.png" alt="ZRON" style="width:180px;height:180px;object-fit:cover;border-radius:50%;box-shadow:0 0 65px #c98d3545" onerror="this.style.display='none'">
+<h3 style="font-size:27px">ENTER THE ZRON ECOSYSTEM</h3>
+<p>Explore decentralized access through a distinctive digital asset experience. Your wallet, your assets, your decisions.</p>
+<a id="buyButton" class="btn btn-gold" target="_blank" rel="noopener" style="margin-top:15px">Explore ZRON Trading ↗</a>
+</div>
+</div>
+</div>
 </section>
 
-<section id="wallet" class="section">
- <div class="container">
-  <div class="section-heading reveal">
-   <div class="tag">YOUR GATEWAY TO WEB3</div>
-   <h2>Connect Your <span class="gold-text">Wallet.</span></h2>
-   <p>Interact with ZRON through compatible EVM wallet providers.</p>
-  </div>
-  <div class="glass wallet-panel reveal">
-   <div class="detail-row"><span>Connection Status</span><strong id="connectionStatus">Not Connected</strong></div>
-   <div class="detail-row"><span>Wallet Address</span><strong id="walletAddress">—</strong></div>
-   <div class="detail-row"><span>Network</span><strong id="walletNetwork">—</strong></div>
-   <div class="detail-row"><span>BNB Balance</span><strong id="bnbBalance">—</strong></div>
-   <div class="detail-row"><span>ZRON Balance</span><strong id="zronBalance">—</strong></div>
-   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:26px">
-    <button class="btn btn-gold" onclick="connectWallet()">Connect Wallet</button>
-    <button class="btn btn-outline" onclick="switchNetwork()">Switch to BSC</button>
-    <button class="btn" onclick="addToken()">+ Add ZRON to Wallet</button>
-   </div>
-   <p>Wallet interaction requires a supported browser wallet. Never share your recovery phrase or private keys.</p>
-  </div>
- </div>
+<section class="section" id="roadmap">
+<div class="container">
+<div class="section-head reveal"><div class="tag">DEVELOPMENT VISION</div><h2>The Road <span class="gold-gradient">Ahead.</span></h2><p>A proposed development framework for ZRON. These phases are illustrative and do not represent confirmed delivery dates or completed milestones.</p></div>
+<div class="roadmap">
+<div class="card road-card reveal"><small>PHASE 01</small><h3>Foundation</h3><ul><li>Project identity</li><li>Token infrastructure</li><li>Official website</li><li>Community foundation</li><li>Blockchain integrations</li></ul></div>
+<div class="card road-card reveal"><small>PHASE 02</small><h3>Market Accessibility</h3><ul><li>DEX liquidity planning</li><li>Wallet accessibility</li><li>Market analytics</li><li>Token visibility</li><li>Community outreach</li></ul></div>
+<div class="card road-card reveal"><small>PHASE 03</small><h3>Ecosystem Growth</h3><ul><li>Community programs</li><li>Partnership exploration</li><li>Enhanced market tools</li><li>Infrastructure upgrades</li><li>Web3 collaborations</li></ul></div>
+<div class="card road-card reveal"><small>PHASE 04</small><h3>Long-Term Vision</h3><ul><li>Utility research</li><li>Additional integrations</li><li>Product development</li><li>Scalability initiatives</li><li>Ecosystem expansion</li></ul></div>
+</div>
+</div>
 </section>
 
-<section id="whitepaper" class="section">
- <div class="container">
-  <div class="cta reveal">
-   <div class="tag">ZRON DOCUMENTATION</div>
-   <h2>THE NEXT CHAPTER<br><span class="gold-text">STARTS HERE.</span></h2>
-   <p>Detailed technical documentation and token distribution specifications will be published once officially finalized.</p>
-   <a href="#tokenomics" class="btn btn-gold">Explore ZRON Fundamentals ↗</a>
-  </div>
- </div>
+<section class="section" id="security">
+<div class="container">
+<div class="section-head reveal"><div class="tag">TRANSPARENCY & RESPONSIBILITY</div><h2>Built Around <span class="gold-gradient">On-Chain Visibility.</span></h2><p>Blockchain participation should begin with verifiable information, informed decisions, and responsible wallet practices.</p></div>
+<div class="security-grid">
+<div class="card reveal"><div class="feature-icon">◎</div><h3>Public Contract Records</h3><p>Inspect token transactions and contract information through independent blockchain explorers. Contract visibility does not itself guarantee security.</p></div>
+<div class="card reveal"><div class="feature-icon">◇</div><h3>Wallet Ownership</h3><p>Supported wallet connections allow users to retain control over their private keys and authorize transactions through their own wallet provider.</p></div>
+<div class="card reveal"><div class="feature-icon">✧</div><h3>Risk Awareness</h3><p>Token prices can be volatile, liquidity can change, and smart contracts can contain risks. Always verify transaction details and conduct independent research.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="wallet">
+<div class="container">
+<div class="section-head reveal"><div class="tag">WEB3 WALLET DASHBOARD</div><h2>Your Wallet. <span class="gold-gradient">Your Control.</span></h2><p>Connect your wallet to view BNB and ZRON balances directly from BNB Smart Chain.</p></div>
+<div class="card wallet-panel reveal">
+<div class="row"><span>Connection Status</span><strong id="connectionStatus">Not Connected</strong></div>
+<div class="row"><span>Wallet Address</span><strong id="walletAddress">—</strong></div>
+<div class="row"><span>Network</span><strong id="walletNetwork">—</strong></div>
+<div class="row"><span>BNB Balance</span><strong id="bnbBalance">—</strong></div>
+<div class="row"><span>ZRON Balance</span><strong id="zronBalance">—</strong></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:25px">
+<button class="btn btn-gold" onclick="connectWallet()">Connect Wallet</button>
+<button class="btn btn-outline" onclick="switchNetwork()">Switch to BSC</button>
+<button class="btn" onclick="addToken()">+ Add ZRON to Wallet</button>
+</div>
+<p>Never disclose your wallet recovery phrase or private keys. ZRON does not require custody of your wallet credentials.</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="faq">
+<div class="container">
+<div class="section-head reveal"><div class="tag">KNOWLEDGE CENTER</div><h2>Frequently Asked <span class="gold-gradient">Questions.</span></h2><p>Essential information about ZRON, BNB Smart Chain, wallets, and decentralized trading.</p></div>
+<div class="faq">
+<details class="faq-item"><summary>What is ZRON?</summary><p>ZRON is a digital token project on BNB Smart Chain. This website provides token information, wallet connectivity, and access to supported decentralized market tools. Additional project utility details will be published as they are finalized.</p></details>
+<details class="faq-item"><summary>Which blockchain does ZRON use?</summary><p>ZRON uses BNB Smart Chain, an EVM-compatible blockchain. Its network Chain ID is 56, and BNB is used to pay transaction fees.</p></details>
+<details class="faq-item"><summary>What is the total supply of ZRON?</summary><p>The project-declared total supply is 1,000,000,000 ZRON. The website also attempts to retrieve the on-chain totalSupply value from the token contract for comparison.</p></details>
+<details class="faq-item"><summary>What is the circulating supply?</summary><p>The circulating supply has not yet been officially specified. It will be displayed once a reliable, verified figure is provided.</p></details>
+<details class="faq-item"><summary>How can I buy or swap ZRON?</summary><p>You can open PancakeSwap through this website and inspect available liquidity pools. Trading is possible only where compatible liquidity and token transfer conditions permit it. Review prices, slippage, fees, and contract details before confirming any transaction.</p></details>
+<details class="faq-item"><summary>How do I add ZRON to MetaMask?</summary><p>Click the Add ZRON to Wallet button. Your wallet will request confirmation to import the token contract. Always independently verify the address.</p></details>
+<details class="faq-item"><summary>Is ZRON audited?</summary><p>No independent audit report has been provided for publication on this website. Do not interpret this interface or public blockchain visibility as evidence of a completed security audit.</p></details>
+<details class="faq-item"><summary>Does ZRON guarantee investment returns?</summary><p>No. Cryptocurrency markets involve significant risk, including price volatility and possible loss of capital. No investment return is guaranteed.</p></details>
+</div>
+</div>
+</section>
+
+<section class="section" id="whitepaper">
+<div class="container">
+<div class="cta reveal">
+<div class="tag">ZRON — THE GOLDEN DIMENSION</div>
+<h2>THE NEXT CHAPTER<br><span class="gold-gradient">BEGINS WITH ZRON.</span></h2>
+<p>Explore a distinctive Web3 identity built around blockchain accessibility, digital ownership, transparent on-chain tools, and a vision for future ecosystem development.</p>
+<p style="font-size:12px">Official whitepaper and detailed project documentation will be published following final confirmation.</p>
+<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+<a class="btn btn-gold" href="#tokenomics">Explore Tokenomics ↗</a>
+<a class="btn btn-outline" id="ctaExplorer" target="_blank" rel="noopener">View Smart Contract ↗</a>
+</div>
+</div>
+</div>
 </section>
 </main>
 
 <footer>
- <div class="container footer-flex">
-  <div class="brand" style="font-size:19px"><span style="color:var(--gold)">✦</span> ZRON</div>
-  <div>© 2026 ZRON. All rights reserved.</div>
-  <div>Built on BNB Smart Chain · Cryptocurrency involves risk.</div>
- </div>
+<div class="container footer-flex">
+<div class="brand" style="font-size:20px"><span class="gold">✦</span> ZRON</div>
+<div>© 2026 ZRON. All rights reserved.</div>
+<div>Powered by BNB Smart Chain · Digital assets involve risk.</div>
+</div>
 </footer>
-
 <div class="toast" id="toast"></div>
 
 <script>
 "use strict";
 
-const ZRON = {
- address:"0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1",
- chainId:56,
- chainHex:"0x38",
- rpc:"https://bsc-dataseed.binance.org/",
- logo:"https://raw.githubusercontent.com/axionteam645/LOGO/main/ZRON.png",
- explorer:"https://bscscan.com",
- market:"https://api.dexscreener.com/latest/dex/tokens/",
- pancake:"https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1"
+const CONFIG={
+token:"0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1",
+chainId:56,
+chainHex:"0x38",
+rpc:"https://bsc-dataseed.binance.org/",
+explorer:"https://bscscan.com",
+logo:"https://raw.githubusercontent.com/axionteam645/ZRON/main/ZRON.png",
+marketApi:"https://api.dexscreener.com/latest/dex/tokens/",
+swap:"https://pancakeswap.finance/swap?chain=bsc&outputCurrency=0x0E282B7d48D34Cc3632241859ae849cbf16BE3d1"
 };
 
 const ABI=[
- "function balanceOf(address) view returns(uint256)",
- "function decimals() view returns(uint8)",
- "function symbol() view returns(string)",
- "function totalSupply() view returns(uint256)"
+"function balanceOf(address) view returns(uint256)",
+"function decimals() view returns(uint8)",
+"function symbol() view returns(string)",
+"function totalSupply() view returns(uint256)"
 ];
 
 const $=id=>document.getElementById(id);
-let web3Provider=null,walletAddress=null,readProvider=null,decimals=18;
-let toastTimer;
+let provider=null,wallet=null,readProvider=null,tokenDecimals=18;
+let toastTimeout=null;
 
 function toast(message){
- const t=$("toast");
- t.textContent=message;t.style.display="block";
- clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>t.style.display="none",5500);
+const el=$("toast");
+el.textContent=message;
+el.style.display="block";
+clearTimeout(toastTimeout);
+toastTimeout=setTimeout(()=>el.style.display="none",5500);
 }
-function short(v){return v?v.slice(0,7)+"..."+v.slice(-5):"—"}
+function short(a){return a?a.slice(0,7)+"..."+a.slice(-5):"—"}
 function fmt(n,d=2){
- n=Number(n);
- if(!Number.isFinite(n))return "—";
- return n.toLocaleString("en-US",{maximumFractionDigits:d});
+const x=Number(n);
+if(!Number.isFinite(x))return "—";
+return x.toLocaleString("en-US",{maximumFractionDigits:d});
 }
-function usd(value){
- const n=Number(value);
- if(!Number.isFinite(n))return "—";
- if(n>=1e9)return "$"+(n/1e9).toFixed(2)+"B";
- if(n>=1e6)return "$"+(n/1e6).toFixed(2)+"M";
- if(n>=1e3)return "$"+(n/1e3).toFixed(2)+"K";
- if(n>0&&n<0.0001)return "$"+n.toPrecision(4);
- return "$"+fmt(n,6);
+function money(n){
+n=Number(n);
+if(!Number.isFinite(n))return "—";
+if(n>=1e9)return "$"+(n/1e9).toFixed(2)+"B";
+if(n>=1e6)return "$"+(n/1e6).toFixed(2)+"M";
+if(n>=1e3)return "$"+(n/1e3).toFixed(2)+"K";
+if(n>0&&n<.0001)return "$"+n.toPrecision(4);
+return "$"+fmt(n,6);
 }
-function err(e){return e?.reason||e?.message||"Request failed"}
-function token(reader){
- return new ethers.Contract(ZRON.address,ABI,reader);
-}
+function errorText(e){return e?.reason||e?.message||"Request failed"}
 function reader(){
- if(!readProvider){
-  readProvider=new ethers.providers.JsonRpcProvider(ZRON.rpc,ZRON.chainId);
- }
- return readProvider;
+if(!readProvider)readProvider=new ethers.providers.JsonRpcProvider(CONFIG.rpc,CONFIG.chainId);
+return readProvider;
 }
+function token(connection){return new ethers.Contract(CONFIG.token,ABI,connection)}
 function toggleMenu(){
- const el=$("mobileNav");
- el.style.display=el.style.display==="block"?"none":"block";
+const n=$("mobileNav");
+n.style.display=n.style.display==="block"?"none":"block";
 }
 
 async function switchNetwork(){
- if(!window.ethereum){
-  toast("Install MetaMask or a compatible EVM wallet.");
-  return false;
- }
- try{
-  await ethereum.request({
-   method:"wallet_switchEthereumChain",
-   params:[{chainId:ZRON.chainHex}]
-  });
-  return true;
- }catch(e){
-  if(e.code===4902){
-   try{
-    await ethereum.request({
-     method:"wallet_addEthereumChain",
-     params:[{
-      chainId:ZRON.chainHex,
-      chainName:"BNB Smart Chain",
-      rpcUrls:[ZRON.rpc],
-      blockExplorerUrls:[ZRON.explorer],
-      nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18}
-     }]
-    });
-    return true;
-   }catch(ex){toast(err(ex));return false}
-  }
-  toast(err(e));return false;
- }
+if(!window.ethereum){toast("Please install MetaMask or a compatible Web3 wallet.");return false}
+try{
+await ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:CONFIG.chainHex}]});
+return true;
+}catch(e){
+if(e.code===4902){
+try{
+await ethereum.request({method:"wallet_addEthereumChain",params:[{
+chainId:CONFIG.chainHex,chainName:"BNB Smart Chain",
+rpcUrls:[CONFIG.rpc],blockExplorerUrls:[CONFIG.explorer],
+nativeCurrency:{name:"BNB",symbol:"BNB",decimals:18}
+}]});
+return true;
+}catch(ex){toast(errorText(ex));return false}
+}
+toast(errorText(e));return false;
+}
 }
 
 async function connectWallet(){
- if(!window.ethereum){
-  toast("No Web3 wallet detected. Install MetaMask.");
-  return;
- }
- try{
-  const ok=await switchNetwork();
-  if(!ok)return;
-  web3Provider=new ethers.providers.Web3Provider(window.ethereum,"any");
-  const accounts=await web3Provider.send("eth_requestAccounts",[]);
-  if(!accounts.length)return;
-  walletAddress=ethers.utils.getAddress(accounts[0]);
-  $("headerWallet").textContent=short(walletAddress);
-  $("connectionStatus").textContent="Connected";
-  $("connectionStatus").style.color="var(--green)";
-  $("walletAddress").textContent=walletAddress;
-  await updateBalances();
-  toast("Wallet connected.");
- }catch(e){toast(err(e))}
+if(!window.ethereum){toast("No injected wallet detected. Install MetaMask.");return}
+try{
+const ok=await switchNetwork();if(!ok)return;
+provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+const accounts=await provider.send("eth_requestAccounts",[]);
+if(!accounts.length)return;
+wallet=ethers.utils.getAddress(accounts[0]);
+$("connectTop").textContent=short(wallet);
+$("connectionStatus").textContent="Connected";
+$("connectionStatus").style.color="var(--green)";
+$("walletAddress").textContent=wallet;
+await updateBalances();
+toast("Wallet connected successfully.");
+}catch(e){toast(errorText(e))}
 }
 
 async function updateBalances(){
- if(!walletAddress||!web3Provider)return;
- try{
-  const net=await web3Provider.getNetwork();
-  $("walletNetwork").textContent=net.chainId===56?"BNB Smart Chain":"Wrong Network";
-  if(net.chainId!==56)return;
-  const [bnb,zron]=await Promise.all([
-   web3Provider.getBalance(walletAddress),
-   token(web3Provider).balanceOf(walletAddress)
-  ]);
-  $("bnbBalance").textContent=fmt(ethers.utils.formatEther(bnb),6)+" BNB";
-  $("zronBalance").textContent=fmt(
-   ethers.utils.formatUnits(zron,decimals),5
-  )+" ZRON";
- }catch(e){
-  console.warn("Balance error",e);
-  $("zronBalance").textContent="Unavailable";
- }
+if(!wallet||!provider)return;
+try{
+const network=await provider.getNetwork();
+$("walletNetwork").textContent=network.chainId===56?"BNB Smart Chain":"Wrong Network";
+if(network.chainId!==56){
+$("bnbBalance").textContent="—";
+$("zronBalance").textContent="—";
+return;
+}
+const [bnb,zron]=await Promise.all([
+provider.getBalance(wallet),
+token(provider).balanceOf(wallet)
+]);
+$("bnbBalance").textContent=fmt(ethers.utils.formatEther(bnb),6)+" BNB";
+$("zronBalance").textContent=fmt(ethers.utils.formatUnits(zron,tokenDecimals),5)+" ZRON";
+}catch(e){
+console.warn(e);
+$("zronBalance").textContent="Unavailable";
+}
 }
 
-async function loadSupply(){
- try{
-  const t=token(reader());
-  const [d,symbol,supply]=await Promise.all([
-   t.decimals(),t.symbol(),t.totalSupply()
-  ]);
-  decimals=Number(d);
-  $("decimals").textContent=decimals;
-  $("onchainSupply").textContent=fmt(
-   ethers.utils.formatUnits(supply,decimals),2
-  )+" "+symbol;
- }catch(e){
-  $("decimals").textContent="Unavailable";
-  $("onchainSupply").textContent="Unavailable";
- }
+async function loadTokenInfo(){
+try{
+const t=token(reader());
+const [d,symbol,supply]=await Promise.all([t.decimals(),t.symbol(),t.totalSupply()]);
+tokenDecimals=Number(d);
+$("decimals").textContent=tokenDecimals;
+$("onchainSupply").textContent=fmt(ethers.utils.formatUnits(supply,tokenDecimals),2)+" "+symbol;
+}catch(e){
+$("decimals").textContent="Unavailable";
+$("onchainSupply").textContent="Unavailable";
+}
 }
 
 async function addToken(){
- if(!window.ethereum){
-  toast("Install MetaMask or another compatible wallet.");
-  return;
- }
- const ok=await switchNetwork();
- if(!ok)return;
- try{
-  const t=token(reader());
-  const [symbol,d]=await Promise.all([t.symbol(),t.decimals()]);
-  if(symbol.toUpperCase()!=="ZRON"){
-   toast("Contract symbol does not match ZRON. Verify the address.");
-   return;
-  }
-  const added=await ethereum.request({
-   method:"wallet_watchAsset",
-   params:{
-    type:"ERC20",
-    options:{
-     address:ZRON.address,
-     symbol,
-     decimals:Number(d),
-     image:ZRON.logo
-    }
-   }
-  });
-  toast(added?"ZRON token added.":"Request cancelled.");
- }catch(e){toast(err(e))}
+if(!window.ethereum){toast("Install MetaMask to add ZRON.");return}
+const ok=await switchNetwork();if(!ok)return;
+try{
+const t=token(reader());
+const [symbol,d]=await Promise.all([t.symbol(),t.decimals()]);
+if(symbol.toUpperCase()!=="ZRON"){toast("Token symbol mismatch. Verify the contract.");return}
+const result=await ethereum.request({
+method:"wallet_watchAsset",
+params:{type:"ERC20",options:{
+address:CONFIG.token,symbol,decimals:Number(d),image:CONFIG.logo
+}}
+});
+toast(result?"ZRON added to wallet.":"Token import cancelled.");
+}catch(e){toast(errorText(e))}
 }
 
 function copyContract(){
- if(navigator.clipboard&&window.isSecureContext){
-  navigator.clipboard.writeText(ZRON.address)
-   .then(()=>toast("Contract address copied."))
-   .catch(()=>toast("Unable to copy."));
- }else{
-  toast("Select the contract address to copy it.");
- }
+if(navigator.clipboard&&window.isSecureContext){
+navigator.clipboard.writeText(CONFIG.token)
+.then(()=>toast("Contract address copied."))
+.catch(()=>toast("Unable to copy contract."));
+}else toast("Please select the contract address to copy it.");
 }
 
 async function loadMarket(){
- $("dataStatus").textContent="Updating...";
- try{
-  const response=await fetch(ZRON.market+ZRON.address,{cache:"no-store"});
-  if(!response.ok)throw new Error("Market feed unavailable");
-  const data=await response.json();
-  const pairs=(data.pairs||[]).filter(p=>
-   p.chainId==="bsc" &&
-   (p.baseToken?.address?.toLowerCase()===ZRON.address.toLowerCase() ||
-    p.quoteToken?.address?.toLowerCase()===ZRON.address.toLowerCase())
-  );
-  pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0));
-  if(!pairs.length){
-   $("dataStatus").textContent="No indexed pool";
-   $("chartMessage").textContent="No indexed ZRON liquidity pool is currently available.";
-   return;
-  }
-  const pair=pairs[0];
-  const base=pair.baseToken.address.toLowerCase()===ZRON.address.toLowerCase();
-  const n=Number(pair.priceUsd);
-  const price=base?n:(n>0?1/n:NaN);
-  $("price").textContent=usd(price);
-  $("volume").textContent=usd(pair.volume?.h24);
-  $("liquidity").textContent=usd(pair.liquidity?.usd);
-  $("marketcap").textContent=base?usd(pair.marketCap):"—";
-  const change=base?Number(pair.priceChange?.h24):NaN;
-  $("priceChange").textContent=Number.isFinite(change)?
-   (change>=0?"+":"")+change.toFixed(2)+"% / 24H":"Price change unavailable";
-  $("priceChange").style.color=change>=0?"var(--green)":"var(--red)";
-  $("change24").textContent=Number.isFinite(change)?
-   (change>=0?"+":"")+change.toFixed(2)+"%":"—";
-  $("buys").textContent=fmt(pair.txns?.h24?.buys,0);
-  $("sells").textContent=fmt(pair.txns?.h24?.sells,0);
-  $("fdv").textContent=base?usd(pair.fdv):"—";
-  $("dexName").textContent=pair.dexId||"—";
-  $("pairName").textContent=(pair.baseToken?.symbol||"—")+
-   " / "+(pair.quoteToken?.symbol||"—");
-  $("poolAddress").textContent=short(pair.pairAddress);
-  $("dataStatus").textContent="Live";
-  const external=pair.url||"https://dexscreener.com/bsc/"+pair.pairAddress;
-  $("chartExternal").href=external;
-  if(pair.pairAddress){
-   const iframe=document.createElement("iframe");
-   iframe.src="https://dexscreener.com/bsc/"+
-    encodeURIComponent(pair.pairAddress)+"?embed=1&theme=dark&trades=0&info=0";
-   iframe.title="ZRON Live DexScreener Chart";
-   iframe.loading="lazy";
-   iframe.referrerPolicy="no-referrer";
-   $("chartContainer").replaceChildren(iframe);
-  }
- }catch(e){
-  $("dataStatus").textContent="Unavailable";
-  $("chartMessage").textContent="Market data cannot be loaded right now.";
-  console.warn(e);
- }
+$("dataStatus").textContent="Updating...";
+try{
+const r=await fetch(CONFIG.marketApi+CONFIG.token,{cache:"no-store"});
+if(!r.ok)throw new Error("Market data unavailable");
+const data=await r.json();
+const pairs=(data.pairs||[]).filter(p=>
+p.chainId==="bsc"&&(
+p.baseToken?.address?.toLowerCase()===CONFIG.token.toLowerCase()||
+p.quoteToken?.address?.toLowerCase()===CONFIG.token.toLowerCase()
+));
+pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0));
+if(!pairs.length){
+$("dataStatus").textContent="No indexed pool";
+$("chartMessage").textContent="No indexed ZRON trading pool is currently available.";
+return;
+}
+const p=pairs[0];
+const base=p.baseToken.address.toLowerCase()===CONFIG.token.toLowerCase();
+const raw=Number(p.priceUsd);
+const price=base?raw:(raw>0?1/raw:NaN);
+$("price").textContent=money(price);
+$("volume").textContent=money(p.volume?.h24);
+$("liquidity").textContent=money(p.liquidity?.usd);
+$("marketcap").textContent=base?money(p.marketCap):"—";
+const change=base?Number(p.priceChange?.h24):NaN;
+$("priceChange").textContent=Number.isFinite(change)?(change>=0?"+":"")+change.toFixed(2)+"% / 24H":"Price change unavailable";
+$("priceChange").style.color=change>=0?"var(--green)":"var(--red)";
+$("change24").textContent=Number.isFinite(change)?(change>=0?"+":"")+change.toFixed(2)+"%":"—";
+$("buys").textContent=fmt(p.txns?.h24?.buys,0);
+$("sells").textContent=fmt(p.txns?.h24?.sells,0);
+$("fdv").textContent=base?money(p.fdv):"—";
+$("dexName").textContent=p.dexId||"—";
+$("pairName").textContent=(p.baseToken?.symbol||"—")+" / "+(p.quoteToken?.symbol||"—");
+$("poolAddress").textContent=short(p.pairAddress);
+$("dataStatus").textContent="Live";
+const link=p.url||"https://dexscreener.com/bsc/"+p.pairAddress;
+$("chartExternal").href=link;
+if(p.pairAddress){
+const iframe=document.createElement("iframe");
+iframe.src="https://dexscreener.com/bsc/"+encodeURIComponent(p.pairAddress)+"?embed=1&theme=dark&trades=0&info=0";
+iframe.title="ZRON Trading Chart";
+iframe.loading="lazy";
+iframe.referrerPolicy="no-referrer";
+$("chartContainer").replaceChildren(iframe);
+}
+}catch(e){
+$("dataStatus").textContent="Unavailable";
+$("chartMessage").textContent="Market data is temporarily unavailable.";
+console.warn(e);
+}
 }
 
-/* THREE-DIMENSIONAL COIN MOUSE INTERACTION */
-const heroArt=$("heroArt");
-const coin=$("coin3d");
-const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-if(!reduceMotion&&window.matchMedia("(pointer:fine)").matches){
- heroArt.addEventListener("mousemove",e=>{
-  const rect=heroArt.getBoundingClientRect();
-  const x=(e.clientX-rect.left)/rect.width-.5;
-  const y=(e.clientY-rect.top)/rect.height-.5;
-  coin.style.transform=
-   "rotateY("+(x*23)+"deg) rotateX("+(-y*23)+"deg)";
- });
- heroArt.addEventListener("mouseleave",()=>{
-  coin.style.transform="rotateX(0deg) rotateY(0deg)";
- });
- document.querySelectorAll(".tilt-card").forEach(el=>{
-  el.addEventListener("mousemove",e=>{
-   const r=el.getBoundingClientRect();
-   const x=(e.clientX-r.left)/r.width-.5;
-   const y=(e.clientY-r.top)/r.height-.5;
-   el.style.transform=
-    "perspective(800px) rotateY("+(x*7)+"deg) rotateX("+(-y*7)+"deg)";
-  });
-  el.addEventListener("mouseleave",()=>{el.style.transform=""});
- });
+/* 3D COIN */
+const art=$("heroArt"),coin=$("coin3d");
+const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(!reduced&&window.matchMedia("(pointer:fine)").matches){
+art.addEventListener("mousemove",e=>{
+const r=art.getBoundingClientRect();
+const x=(e.clientX-r.left)/r.width-.5;
+const y=(e.clientY-r.top)/r.height-.5;
+coin.style.transform="rotateY("+(x*24)+"deg) rotateX("+(-y*24)+"deg)";
+});
+art.addEventListener("mouseleave",()=>coin.style.transform="");
 }
 
-/* INTERSECTION REVEAL */
+/* SCROLL REVEAL */
 if("IntersectionObserver" in window){
- const observer=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-   if(entry.isIntersecting){
-    entry.target.classList.add("visible");
-    observer.unobserve(entry.target);
-   }
-  });
- },{threshold:.08});
- document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
-}else{
- document.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
-}
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}
+});
+},{threshold:.08});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+}else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("visible"));
 
-/* GOLD PARTICLE BACKGROUND */
+/* GOLD PARTICLES */
 (function(){
- const canvas=$("space");
- const ctx=canvas.getContext("2d");
- if(!ctx||reduceMotion)return;
- let width,height,particles=[];
- const pointer={x:-1000,y:-1000};
- function resize(){
-  width=canvas.width=window.innerWidth* Math.min(devicePixelRatio,2);
-  height=canvas.height=window.innerHeight*Math.min(devicePixelRatio,2);
-  particles=[];
-  const count=Math.min(105,Math.floor(window.innerWidth/14));
-  for(let i=0;i<count;i++){
-   particles.push({
-    x:Math.random()*width,
-    y:Math.random()*height,
-    vx:(Math.random()-.5)*.45,
-    vy:(Math.random()-.5)*.45,
-    r:(Math.random()*1.4+.4)*Math.min(devicePixelRatio,2),
-    alpha:Math.random()*.5+.16
-   });
-  }
- }
- function animate(){
-  ctx.clearRect(0,0,width,height);
-  for(let i=0;i<particles.length;i++){
-   const p=particles[i];
-   p.x+=p.vx;p.y+=p.vy;
-   if(p.x<0)p.x=width;
-   if(p.y<0)p.y=height;
-   if(p.x>width)p.x=0;
-   if(p.y>height)p.y=0;
-   ctx.beginPath();
-   ctx.fillStyle="rgba(245,181,65,"+p.alpha+")";
-   ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-   ctx.fill();
-   for(let j=i+1;j<particles.length;j++){
-    const q=particles[j];
-    const dx=p.x-q.x,dy=p.y-q.y;
-    const distance=Math.hypot(dx,dy);
-    const range=125*Math.min(devicePixelRatio,2);
-    if(distance<range){
-     ctx.beginPath();
-     ctx.strokeStyle="rgba(219,149,39,"+((1-distance/range)*.075)+")";
-     ctx.lineWidth=.5;
-     ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
-    }
-   }
-  }
-  requestAnimationFrame(animate);
- }
- window.addEventListener("resize",resize);
- resize();animate();
+if(reduced)return;
+const canvas=$("particles"),ctx=canvas.getContext("2d");
+if(!ctx)return;
+let w,h,points=[];
+function resize(){
+const ratio=Math.min(window.devicePixelRatio||1,2);
+w=canvas.width=innerWidth*ratio;
+h=canvas.height=innerHeight*ratio;
+points=[];
+const count=Math.min(95,Math.floor(innerWidth/15));
+for(let i=0;i<count;i++){
+points.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5,r:(Math.random()*1.3+.4)*ratio,a:Math.random()*.5+.15});
+}
+}
+function draw(){
+ctx.clearRect(0,0,w,h);
+for(let i=0;i<points.length;i++){
+const p=points[i];p.x+=p.vx;p.y+=p.vy;
+if(p.x<0)p.x=w;if(p.x>w)p.x=0;if(p.y<0)p.y=h;if(p.y>h)p.y=0;
+ctx.beginPath();ctx.fillStyle="rgba(246,183,65,"+p.a+")";
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+}
+requestAnimationFrame(draw);
+}
+addEventListener("resize",resize);
+resize();draw();
 })();
 
 async function init(){
- $("contractAddress").textContent=ZRON.address;
- $("explorerContract").href=ZRON.explorer+"/token/"+ZRON.address;
- $("explorerFeature").href=ZRON.explorer+"/token/"+ZRON.address;
- await Promise.allSettled([loadSupply(),loadMarket()]);
- if(window.ethereum){
-  window.ethereum.on("accountsChanged",async accounts=>{
-   if(!accounts.length){
-    walletAddress=null;web3Provider=null;
-    $("connectionStatus").textContent="Not Connected";
-    $("connectionStatus").style.color="";
-    $("headerWallet").textContent="Connect Wallet";
-    $("walletAddress").textContent="—";
-    $("walletNetwork").textContent="—";
-    $("bnbBalance").textContent="—";
-    $("zronBalance").textContent="—";
-   }else{
-    walletAddress=accounts[0];
-    web3Provider=new ethers.providers.Web3Provider(window.ethereum,"any");
-    $("walletAddress").textContent=walletAddress;
-    $("headerWallet").textContent=short(walletAddress);
-    $("connectionStatus").textContent="Connected";
-    await updateBalances();
-   }
-  });
-  window.ethereum.on("chainChanged",async()=>{
-   if(walletAddress){
-    web3Provider=new ethers.providers.Web3Provider(window.ethereum,"any");
-    await updateBalances();
-   }
-  });
- }
+$("contractAddress").textContent=CONFIG.token;
+$("contractExplorer").href=CONFIG.explorer+"/token/"+CONFIG.token;
+$("ecosystemExplorer").href=CONFIG.explorer+"/token/"+CONFIG.token;
+$("ctaExplorer").href=CONFIG.explorer+"/token/"+CONFIG.token;
+["heroSwap","ecosystemSwap","buyButton"].forEach(id=>$(id).href=CONFIG.swap);
+await Promise.allSettled([loadTokenInfo(),loadMarket()]);
+if(window.ethereum){
+window.ethereum.on("accountsChanged",async accounts=>{
+if(!accounts.length){
+wallet=null;provider=null;
+$("connectTop").textContent="Connect Wallet";
+$("connectionStatus").textContent="Not Connected";
+$("connectionStatus").style.color="";
+$("walletAddress").textContent="—";
+$("walletNetwork").textContent="—";
+$("bnbBalance").textContent="—";
+$("zronBalance").textContent="—";
+}else{
+wallet=accounts[0];
+provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+$("connectTop").textContent=short(wallet);
+$("connectionStatus").textContent="Connected";
+$("walletAddress").textContent=wallet;
+await updateBalances();
+}
+});
+window.ethereum.on("chainChanged",async()=>{
+if(wallet){
+provider=new ethers.providers.Web3Provider(window.ethereum,"any");
+await updateBalances();
+}
+});
+}
 }
 init();
 setInterval(loadMarket,60000);
-setInterval(()=>{if(walletAddress)updateBalances()},30000);
+setInterval(()=>{if(wallet)updateBalances()},30000);
 </script>
 </body>
 </html>
